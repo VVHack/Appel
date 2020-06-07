@@ -24,3 +24,5 @@ fun print_list l =
     end;
 
 fun println x = print(x ^ "\n");
+
+fun printIntLn x = print(Int.toString(x) ^ "\n");
