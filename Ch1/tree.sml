@@ -11,7 +11,7 @@ fun lookup (key, LEAF) = nil
     else v;
 
 fun depth LEAF = 0
-  | depth (TREE(l,(k,v),r)) = depth(l) + depth(r) + 1;
+  | depth (TREE(l,(k,v),r)) = 1 + max(depth l)(depth r);
 
 fun left_rotate LEAF = LEAF
   | left_rotate (TREE(l, (k, v), r)) =
@@ -27,22 +27,22 @@ fun balance LEAF = LEAF
   | balance (TREE(l,(k,v),r)) =
     let val depthl = depth(l)
         val depthr = depth(r) in
-    if depthl - depthr > 2 then
+    if depthl - depthr > 1 then
         case l of LEAF => raise Fail "This is not possible"
                 | TREE(ll, (kl, vl), lr) =>
                   let val depthll = depth(ll)
                       val depthlr = depth(lr) in
-                  if depthll > depthlr then
+                  if depthll >= depthlr then
                       right_rotate (TREE(l, (k, v), r))
                   else
                       right_rotate (TREE(left_rotate(TREE(ll, (kl, vl), lr)), (k, v), r))
                   end
-    else if depthr - depthl > 2 then
+    else if depthr - depthl > 1 then
         case r of LEAF => raise Fail "This is not possible"
                 | TREE(rl, (kr, vr), rr) =>
                   let val depthrl = depth(rl)
                       val depthrr = depth(rr) in
-                  if depthrl > depthrr then
+                  if depthrr >= depthrl then
                       left_rotate (TREE(l, (k, v), r))
                   else
                       left_rotate (TREE(l, (k, v), right_rotate(TREE(rl, (kr, vr), rr))))
@@ -53,9 +53,9 @@ fun balance LEAF = LEAF
 fun insert (key,value,LEAF) = TREE(LEAF,(key,value),LEAF)
   | insert (key,value,TREE(l,(k,v),r)) =
         if key < k then
-            (println("CASE LESS, Key = " ^ key);balance(TREE(insert(key,value,l),(k,v),r)))
+            balance(TREE(insert(key,value,l),(k,v),r))
         else if key > k then
-            (println("CASE MORE, Key = " ^ key);balance(TREE(l,(k,v),insert(key,value,r))))
+            balance(TREE(l,(k,v),insert(key,value,r)))
         else TREE(l,(k,value),r);
 
 val tree = insert("a", 1, empty);
