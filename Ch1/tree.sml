@@ -75,18 +75,21 @@ fun fuse ([], []) = []
   | fuse (this_left_level::s::next_left_levels,
          this_right_level::t::next_right_levels) = raise Domain;
 
-fun treeToString LEAF = (6, [repeat 6 " "])
-  | treeToString (TREE(l, (k, v:int), r)) =
-    let val (left_space, left_levels) = treeToString(l)
-        val (right_space, right_levels) = treeToString(r) in
-    let val root_string = (repeat (left_space+4)  " ") ^
-                          "(" ^ k ^ "," ^ Int.toString(v) ^ ")"
-        val space = String.size(root_string) in
+fun treeToString (prefix, LEAF) = (prefix, [repeat prefix " "])
+  | treeToString (prefix, TREE(l, (k, v:int), r)) =
+    let val kv_str = "(" ^ k ^ "," ^ Int.toString(v) ^ ")"
+        val len_kv_str = String.size("(" ^ k ^ "," ^ Int.toString(v) ^ ")") in
+    let val (left_space, left_levels) = treeToString(prefix, l)
+        val (right_space, right_levels) = treeToString(len_kv_str, r) in
+    let val root_string =
+        (repeat (left_space)  " ") ^ kv_str ^ (repeat (right_space-len_kv_str) " ")
+        val space = left_space + right_space in
         (space, root_string::"\n"::fuse(left_levels, right_levels))
+    end
     end
     end;
 
 fun printtree (tree: int tree) =
-    let val (num_leaves, levels) = treeToString tree in
+    let val (num_leaves, levels) = treeToString (0, tree) in
         print ((stringListCombined levels) ^ "\n")
     end;
