@@ -58,14 +58,35 @@ fun insert (key,value,LEAF) = TREE(LEAF,(key,value),LEAF)
             balance(TREE(l,(k,v),insert(key,value,r)))
         else TREE(l,(k,value),r);
 
-val tree = insert("a", 1, empty);
-printIntLn(depth(tree));
+fun fuse ([], []) = []
+  | fuse (left_levels, []) = left_levels
+  | fuse ([], right_levels) = right_levels
+  | fuse (this_left_level::[], this_right_level::[]) =
+         [this_left_level ^ "" ^ this_right_level]
+  | fuse (this_left_level::[], this_right_level::next_right_levels) =
+         [this_left_level ^ "" ^ this_right_level] @ next_right_levels
+  | fuse (this_left_level::next_left_levels, this_right_level::[]) =
+         [this_left_level ^ this_right_level] @ next_left_levels
+  | fuse (this_left_level::"\n"::next_left_levels,
+         this_right_level::"\n"::next_right_levels) =
+         let val next_levels_fused = fuse(next_left_levels, next_right_levels) in
+             (this_left_level ^ this_right_level)::"\n"::next_levels_fused
+         end
+  | fuse (this_left_level::s::next_left_levels,
+         this_right_level::t::next_right_levels) = raise Domain;
 
-val tree = insert("a", 1, tree);
-printIntLn(depth(tree));
+fun treeToString LEAF = (6, [repeat 6 " "])
+  | treeToString (TREE(l, (k, v:int), r)) =
+    let val (left_space, left_levels) = treeToString(l)
+        val (right_space, right_levels) = treeToString(r) in
+    let val root_string = (repeat (left_space+4)  " ") ^
+                          "(" ^ k ^ "," ^ Int.toString(v) ^ ")"
+        val space = String.size(root_string) in
+        (space, root_string::"\n"::fuse(left_levels, right_levels))
+    end
+    end;
 
-val tree = insert("b", 2, tree);
-printIntLn(depth(tree));
-
-val tree = insert("c", 2, tree);
-printIntLn(depth(tree));
+fun printtree (tree: int tree) =
+    let val (num_leaves, levels) = treeToString tree in
+        print ((stringListCombined levels) ^ "\n")
+    end;

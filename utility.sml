@@ -28,3 +28,9 @@ fun println x = print(x ^ "\n");
 fun printInt x = print(Int.toString(x));
 
 fun printIntLn x = print(Int.toString(x) ^ "\n");
+
+fun stringListCombined [] = ""
+  | stringListCombined (x::xs) = x ^ (stringListCombined xs);
+
+(* Repeats a string n times *)
+fun repeat 0 = (fn s => "") | repeat n = fn s => s ^ (repeat (n-1) s);
