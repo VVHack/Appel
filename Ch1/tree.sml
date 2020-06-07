@@ -52,8 +52,10 @@ fun balance LEAF = LEAF
 
 fun insert (key,value,LEAF) = TREE(LEAF,(key,value),LEAF)
   | insert (key,value,TREE(l,(k,v),r)) =
-        if key < k then balance(TREE(balance(insert(key,value,l)),(k,v),r))
-        else if key > k then balance(TREE(l,(k,v),balance(insert(key,value,r))))
+        if key < k then
+            (println("CASE LESS, Key = " ^ key);balance(TREE(insert(key,value,l),(k,v),r)))
+        else if key > k then
+            (println("CASE MORE, Key = " ^ key);balance(TREE(l,(k,v),insert(key,value,r))))
         else TREE(l,(k,value),r);
 
 val tree = insert("a", 1, empty);
@@ -67,7 +69,3 @@ printIntLn(depth(tree));
 
 val tree = insert("c", 2, tree);
 printIntLn(depth(tree));
-
-val tree = insert("d", 1, tree);
-printIntLn(depth(tree));
-
