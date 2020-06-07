@@ -39,3 +39,7 @@ printtree tree;
 val tree = insert("h", 90, tree);
 printIntLn(depth(tree));
 printtree tree;
+
+val tree = insert("p", 14234341341, tree);
+printIntLn(depth(tree));
+printtree tree;
