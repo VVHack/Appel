@@ -30,6 +30,7 @@ fun process_string s = String.implode (process_string_exploded (String.explode s
 
 %%
 chars="\""([^"\""]|"\\\"")*"\"";
+digits=[0-9];
 
 %s INITIAL;
 %s STRING;
@@ -39,6 +40,8 @@ chars="\""([^"\""]|"\\\"")*"\"";
 <INITIAL> " "	=> (continue());
 <INITIAL> ","	=> (Tokens.COMMA(yypos,yypos+1));
 <INITIAL> var  	=> (Tokens.VAR(yypos,yypos+3));
-<INITIAL> "123"	=> (Tokens.INT(123,yypos,yypos+3));
+<INITIAL> {digits}+	=> (let val SOME num = Int.fromString(yytext) in
+                        Tokens.INT(num, yypos, yypos + size yytext)
+                        end);
 <INITIAL> .       => (ErrorMsg.error yypos ("illegal character " ^ yytext); continue());
 
