@@ -12,6 +12,7 @@ fun process_string_exploded (#"\\"::c::suff) =
     else if c =  #"n" then #"\n"::(process_string_exploded suff)                   
     else if c =  #"\"" then #"\""::(process_string_exploded suff)                  
     else process_string_exploded (c::suff)                                         
+  | process_string_exploded (#"\""::suff) = process_string_exploded suff          
   | process_string_exploded (c::suff) = c::(process_string_exploded suff)          
   | process_string_exploded [] = [];                                               
                                                                                    
