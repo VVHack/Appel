@@ -111,11 +111,19 @@ fun err(p1,p2) = ErrorMsg.error p1
 
 fun eof() = let val pos = hd(!linePos) in Tokens.EOF(pos,pos) end
 
-fun process_string_exploded (#"\\"::c::suff) =                                     
-    if c =  #"\\" then #"\\"::(process_string_exploded suff)                       
-    else if c =  #"n" then #"\n"::(process_string_exploded suff)                   
-    else if c =  #"\"" then #"\""::(process_string_exploded suff)                  
-    else process_string_exploded (c::suff)                                         
+fun remove_whitespace_exploded (#" "::suff) = remove_whitespace_exploded suff
+  | remove_whitespace_exploded (#"\t"::suff) = remove_whitespace_exploded suff
+  | remove_whitespace_exploded str_exploded = str_exploded;
+
+fun remove_whitespace str = String.implode (remove_whitespace_exploded (String.explode str));
+
+fun process_string_exploded (#"\\" :: #"s" :: #"." :: #"." :: #"." :: #"\\" :: #"s" ::suff) =
+    remove_whitespace_exploded suff
+  | process_string_exploded (#"\\" :: #"\\" :: suff) = #"\\"::(process_string_exploded suff)
+  | process_string_exploded (#"\\" :: #"n" :: suff) = #"\n"::(process_string_exploded suff)
+  | process_string_exploded (#"\\" :: #"\"" :: suff) = #"\""::(process_string_exploded suff)
+  | process_string_exploded (#"\\" :: c :: suff) =
+    raise Fail ("Unknown escape sequence: " ^ "\\" ^ (String.implode [c]))
   | process_string_exploded (#"\""::suff) = process_string_exploded suff          
   | process_string_exploded (#"\n"::suff) = process_string_exploded suff          
   | process_string_exploded (c::suff) = c::(process_string_exploded suff)          
@@ -190,201 +198,206 @@ fun yyAction0 (strm, lastMatch : yymatch) = let
       end
 fun yyAction1 (strm, lastMatch : yymatch) = (yystrm := strm;
       (lineNum := !lineNum+1; linePos := yypos :: !linePos; continue()))
-fun yyAction2 (strm, lastMatch : yymatch) = (yystrm := strm;
-      (Tokens.COMMA(yypos,yypos+1)))
+fun yyAction2 (strm, lastMatch : yymatch) = (yystrm := strm; (continue()))
 fun yyAction3 (strm, lastMatch : yymatch) = (yystrm := strm;
-      (Tokens.VAR(yypos,yypos+3)))
+      (Tokens.COMMA(yypos,yypos+1)))
 fun yyAction4 (strm, lastMatch : yymatch) = (yystrm := strm;
+      (Tokens.VAR(yypos,yypos+3)))
+fun yyAction5 (strm, lastMatch : yymatch) = (yystrm := strm;
       (Tokens.INT(123,yypos,yypos+3)))
-fun yyAction5 (strm, lastMatch : yymatch) = let
+fun yyAction6 (strm, lastMatch : yymatch) = let
       val yytext = yymktext(strm)
       in
         yystrm := strm;
         (ErrorMsg.error yypos ("illegal character " ^ yytext); continue())
       end
-fun yyQ9 (strm, lastMatch : yymatch) = (case (yygetc(strm))
-       of NONE => yyAction3(strm, yyNO_MATCH)
-        | SOME(inp, strm') => yyAction3(strm, yyNO_MATCH)
-      (* end case *))
-fun yyQ8 (strm, lastMatch : yymatch) = (case (yygetc(strm))
-       of NONE => yystuck(lastMatch)
-        | SOME(inp, strm') =>
-            if inp = #"r"
-              then yyQ9(strm', lastMatch)
-              else yystuck(lastMatch)
-      (* end case *))
-fun yyQ7 (strm, lastMatch : yymatch) = (case (yygetc(strm))
-       of NONE => yyAction5(strm, yyNO_MATCH)
-        | SOME(inp, strm') =>
-            if inp = #"a"
-              then yyQ8(strm', yyMATCH(strm, yyAction5, yyNO_MATCH))
-              else yyAction5(strm, yyNO_MATCH)
-      (* end case *))
-fun yyQ11 (strm, lastMatch : yymatch) = (case (yygetc(strm))
+fun yyQ10 (strm, lastMatch : yymatch) = (case (yygetc(strm))
        of NONE => yyAction4(strm, yyNO_MATCH)
         | SOME(inp, strm') => yyAction4(strm, yyNO_MATCH)
       (* end case *))
-fun yyQ10 (strm, lastMatch : yymatch) = (case (yygetc(strm))
+fun yyQ9 (strm, lastMatch : yymatch) = (case (yygetc(strm))
+       of NONE => yystuck(lastMatch)
+        | SOME(inp, strm') =>
+            if inp = #"r"
+              then yyQ10(strm', lastMatch)
+              else yystuck(lastMatch)
+      (* end case *))
+fun yyQ8 (strm, lastMatch : yymatch) = (case (yygetc(strm))
+       of NONE => yyAction6(strm, yyNO_MATCH)
+        | SOME(inp, strm') =>
+            if inp = #"a"
+              then yyQ9(strm', yyMATCH(strm, yyAction6, yyNO_MATCH))
+              else yyAction6(strm, yyNO_MATCH)
+      (* end case *))
+fun yyQ12 (strm, lastMatch : yymatch) = (case (yygetc(strm))
+       of NONE => yyAction5(strm, yyNO_MATCH)
+        | SOME(inp, strm') => yyAction5(strm, yyNO_MATCH)
+      (* end case *))
+fun yyQ11 (strm, lastMatch : yymatch) = (case (yygetc(strm))
        of NONE => yystuck(lastMatch)
         | SOME(inp, strm') =>
             if inp = #"3"
-              then yyQ11(strm', lastMatch)
+              then yyQ12(strm', lastMatch)
               else yystuck(lastMatch)
       (* end case *))
-fun yyQ6 (strm, lastMatch : yymatch) = (case (yygetc(strm))
-       of NONE => yyAction5(strm, yyNO_MATCH)
+fun yyQ7 (strm, lastMatch : yymatch) = (case (yygetc(strm))
+       of NONE => yyAction6(strm, yyNO_MATCH)
         | SOME(inp, strm') =>
             if inp = #"2"
-              then yyQ10(strm', yyMATCH(strm, yyAction5, yyNO_MATCH))
-              else yyAction5(strm, yyNO_MATCH)
+              then yyQ11(strm', yyMATCH(strm, yyAction6, yyNO_MATCH))
+              else yyAction6(strm, yyNO_MATCH)
       (* end case *))
-fun yyQ5 (strm, lastMatch : yymatch) = (case (yygetc(strm))
-       of NONE => yyAction2(strm, yyNO_MATCH)
-        | SOME(inp, strm') => yyAction2(strm, yyNO_MATCH)
+fun yyQ6 (strm, lastMatch : yymatch) = (case (yygetc(strm))
+       of NONE => yyAction3(strm, yyNO_MATCH)
+        | SOME(inp, strm') => yyAction3(strm, yyNO_MATCH)
       (* end case *))
-fun yyQ13 (strm, lastMatch : yymatch) = (case (yygetc(strm))
+fun yyQ14 (strm, lastMatch : yymatch) = (case (yygetc(strm))
        of NONE => yyAction0(strm, yyNO_MATCH)
         | SOME(inp, strm') => yyAction0(strm, yyNO_MATCH)
       (* end case *))
-fun yyQ14 (strm, lastMatch : yymatch) = (case (yygetc(strm))
+fun yyQ15 (strm, lastMatch : yymatch) = (case (yygetc(strm))
        of NONE => yystuck(lastMatch)
         | SOME(inp, strm') =>
             if inp = #":"
               then yystuck(lastMatch)
             else if inp < #":"
               then if inp = #"\""
-                  then yyQ15(strm', lastMatch)
+                  then yyQ16(strm', lastMatch)
                 else if inp < #"\""
                   then if inp = #"\n"
-                      then yyQ12(strm', lastMatch)
+                      then yyQ13(strm', lastMatch)
                       else yystuck(lastMatch)
                 else if inp <= #"/"
                   then yystuck(lastMatch)
-                  else yyQ12(strm', lastMatch)
+                  else yyQ13(strm', lastMatch)
             else if inp = #"\\"
-              then yyQ14(strm', lastMatch)
+              then yyQ15(strm', lastMatch)
             else if inp < #"\\"
               then if inp = #"A"
-                  then yyQ12(strm', lastMatch)
+                  then yyQ13(strm', lastMatch)
                 else if inp < #"A"
                   then yystuck(lastMatch)
                 else if inp = #"["
                   then yystuck(lastMatch)
-                  else yyQ12(strm', lastMatch)
+                  else yyQ13(strm', lastMatch)
             else if inp = #"a"
-              then yyQ12(strm', lastMatch)
+              then yyQ13(strm', lastMatch)
             else if inp < #"a"
               then yystuck(lastMatch)
             else if inp <= #"z"
-              then yyQ12(strm', lastMatch)
+              then yyQ13(strm', lastMatch)
               else yystuck(lastMatch)
       (* end case *))
-and yyQ15 (strm, lastMatch : yymatch) = (case (yygetc(strm))
+and yyQ16 (strm, lastMatch : yymatch) = (case (yygetc(strm))
        of NONE => yyAction0(strm, yyNO_MATCH)
         | SOME(inp, strm') =>
             if inp = #":"
               then yyAction0(strm, yyNO_MATCH)
             else if inp < #":"
               then if inp = #"\""
-                  then yyQ13(strm', yyMATCH(strm, yyAction0, yyNO_MATCH))
+                  then yyQ14(strm', yyMATCH(strm, yyAction0, yyNO_MATCH))
                 else if inp < #"\""
                   then if inp = #"\n"
-                      then yyQ12(strm', yyMATCH(strm, yyAction0, yyNO_MATCH))
+                      then yyQ13(strm', yyMATCH(strm, yyAction0, yyNO_MATCH))
                       else yyAction0(strm, yyNO_MATCH)
                 else if inp <= #"/"
                   then yyAction0(strm, yyNO_MATCH)
-                  else yyQ12(strm', yyMATCH(strm, yyAction0, yyNO_MATCH))
+                  else yyQ13(strm', yyMATCH(strm, yyAction0, yyNO_MATCH))
             else if inp = #"\\"
-              then yyQ14(strm', yyMATCH(strm, yyAction0, yyNO_MATCH))
+              then yyQ15(strm', yyMATCH(strm, yyAction0, yyNO_MATCH))
             else if inp < #"\\"
               then if inp = #"A"
-                  then yyQ12(strm', yyMATCH(strm, yyAction0, yyNO_MATCH))
+                  then yyQ13(strm', yyMATCH(strm, yyAction0, yyNO_MATCH))
                 else if inp < #"A"
                   then yyAction0(strm, yyNO_MATCH)
                 else if inp = #"["
                   then yyAction0(strm, yyNO_MATCH)
-                  else yyQ12(strm', yyMATCH(strm, yyAction0, yyNO_MATCH))
+                  else yyQ13(strm', yyMATCH(strm, yyAction0, yyNO_MATCH))
             else if inp = #"a"
-              then yyQ12(strm', yyMATCH(strm, yyAction0, yyNO_MATCH))
+              then yyQ13(strm', yyMATCH(strm, yyAction0, yyNO_MATCH))
             else if inp < #"a"
               then yyAction0(strm, yyNO_MATCH)
             else if inp <= #"z"
-              then yyQ12(strm', yyMATCH(strm, yyAction0, yyNO_MATCH))
+              then yyQ13(strm', yyMATCH(strm, yyAction0, yyNO_MATCH))
               else yyAction0(strm, yyNO_MATCH)
       (* end case *))
-and yyQ12 (strm, lastMatch : yymatch) = (case (yygetc(strm))
+and yyQ13 (strm, lastMatch : yymatch) = (case (yygetc(strm))
        of NONE => yystuck(lastMatch)
         | SOME(inp, strm') =>
             if inp = #":"
               then yystuck(lastMatch)
             else if inp < #":"
               then if inp = #"\""
-                  then yyQ13(strm', lastMatch)
+                  then yyQ14(strm', lastMatch)
                 else if inp < #"\""
                   then if inp = #"\n"
-                      then yyQ12(strm', lastMatch)
+                      then yyQ13(strm', lastMatch)
                       else yystuck(lastMatch)
                 else if inp <= #"/"
                   then yystuck(lastMatch)
-                  else yyQ12(strm', lastMatch)
+                  else yyQ13(strm', lastMatch)
             else if inp = #"\\"
-              then yyQ14(strm', lastMatch)
+              then yyQ15(strm', lastMatch)
             else if inp < #"\\"
               then if inp = #"A"
-                  then yyQ12(strm', lastMatch)
+                  then yyQ13(strm', lastMatch)
                 else if inp < #"A"
                   then yystuck(lastMatch)
                 else if inp = #"["
                   then yystuck(lastMatch)
-                  else yyQ12(strm', lastMatch)
+                  else yyQ13(strm', lastMatch)
             else if inp = #"a"
-              then yyQ12(strm', lastMatch)
+              then yyQ13(strm', lastMatch)
             else if inp < #"a"
               then yystuck(lastMatch)
             else if inp <= #"z"
-              then yyQ12(strm', lastMatch)
+              then yyQ13(strm', lastMatch)
               else yystuck(lastMatch)
       (* end case *))
-fun yyQ4 (strm, lastMatch : yymatch) = (case (yygetc(strm))
-       of NONE => yyAction5(strm, yyNO_MATCH)
+fun yyQ5 (strm, lastMatch : yymatch) = (case (yygetc(strm))
+       of NONE => yyAction6(strm, yyNO_MATCH)
         | SOME(inp, strm') =>
             if inp = #":"
-              then yyAction5(strm, yyNO_MATCH)
+              then yyAction6(strm, yyNO_MATCH)
             else if inp < #":"
               then if inp = #"\""
-                  then yyQ13(strm', yyMATCH(strm, yyAction5, yyNO_MATCH))
+                  then yyQ14(strm', yyMATCH(strm, yyAction6, yyNO_MATCH))
                 else if inp < #"\""
                   then if inp = #"\n"
-                      then yyQ12(strm', yyMATCH(strm, yyAction5, yyNO_MATCH))
-                      else yyAction5(strm, yyNO_MATCH)
+                      then yyQ13(strm', yyMATCH(strm, yyAction6, yyNO_MATCH))
+                      else yyAction6(strm, yyNO_MATCH)
                 else if inp <= #"/"
-                  then yyAction5(strm, yyNO_MATCH)
-                  else yyQ12(strm', yyMATCH(strm, yyAction5, yyNO_MATCH))
+                  then yyAction6(strm, yyNO_MATCH)
+                  else yyQ13(strm', yyMATCH(strm, yyAction6, yyNO_MATCH))
             else if inp = #"\\"
-              then yyQ14(strm', yyMATCH(strm, yyAction5, yyNO_MATCH))
+              then yyQ15(strm', yyMATCH(strm, yyAction6, yyNO_MATCH))
             else if inp < #"\\"
               then if inp = #"A"
-                  then yyQ12(strm', yyMATCH(strm, yyAction5, yyNO_MATCH))
+                  then yyQ13(strm', yyMATCH(strm, yyAction6, yyNO_MATCH))
                 else if inp < #"A"
-                  then yyAction5(strm, yyNO_MATCH)
+                  then yyAction6(strm, yyNO_MATCH)
                 else if inp = #"["
-                  then yyAction5(strm, yyNO_MATCH)
-                  else yyQ12(strm', yyMATCH(strm, yyAction5, yyNO_MATCH))
+                  then yyAction6(strm, yyNO_MATCH)
+                  else yyQ13(strm', yyMATCH(strm, yyAction6, yyNO_MATCH))
             else if inp = #"a"
-              then yyQ12(strm', yyMATCH(strm, yyAction5, yyNO_MATCH))
+              then yyQ13(strm', yyMATCH(strm, yyAction6, yyNO_MATCH))
             else if inp < #"a"
-              then yyAction5(strm, yyNO_MATCH)
+              then yyAction6(strm, yyNO_MATCH)
             else if inp <= #"z"
-              then yyQ12(strm', yyMATCH(strm, yyAction5, yyNO_MATCH))
-              else yyAction5(strm, yyNO_MATCH)
+              then yyQ13(strm', yyMATCH(strm, yyAction6, yyNO_MATCH))
+              else yyAction6(strm, yyNO_MATCH)
+      (* end case *))
+fun yyQ4 (strm, lastMatch : yymatch) = (case (yygetc(strm))
+       of NONE => yyAction2(strm, yyNO_MATCH)
+        | SOME(inp, strm') => yyAction2(strm, yyNO_MATCH)
       (* end case *))
 fun yyQ3 (strm, lastMatch : yymatch) = (case (yygetc(strm))
        of NONE => yyAction1(strm, yyNO_MATCH)
         | SOME(inp, strm') => yyAction1(strm, yyNO_MATCH)
       (* end case *))
 fun yyQ2 (strm, lastMatch : yymatch) = (case (yygetc(strm))
-       of NONE => yyAction5(strm, yyNO_MATCH)
-        | SOME(inp, strm') => yyAction5(strm, yyNO_MATCH)
+       of NONE => yyAction6(strm, yyNO_MATCH)
+        | SOME(inp, strm') => yyAction6(strm, yyNO_MATCH)
       (* end case *))
 fun yyQ1 (strm, lastMatch : yymatch) = (case (yygetc(strm))
        of NONE =>
@@ -392,26 +405,26 @@ fun yyQ1 (strm, lastMatch : yymatch) = (case (yygetc(strm))
               then UserDeclarations.eof(yyarg)
               else yystuck(lastMatch)
         | SOME(inp, strm') =>
-            if inp = #","
-              then yyQ5(strm', lastMatch)
-            else if inp < #","
-              then if inp = #"\v"
-                  then yyQ2(strm', lastMatch)
-                else if inp < #"\v"
+            if inp = #"#"
+              then yyQ2(strm', lastMatch)
+            else if inp < #"#"
+              then if inp = #" "
+                  then yyQ4(strm', lastMatch)
+                else if inp < #" "
                   then if inp = #"\n"
                       then yyQ3(strm', lastMatch)
                       else yyQ2(strm', lastMatch)
-                else if inp = #"\""
-                  then yyQ4(strm', lastMatch)
-                  else yyQ2(strm', lastMatch)
-            else if inp = #"2"
-              then yyQ2(strm', lastMatch)
-            else if inp < #"2"
-              then if inp = #"1"
+                else if inp = #"!"
+                  then yyQ2(strm', lastMatch)
+                  else yyQ5(strm', lastMatch)
+            else if inp = #"1"
+              then yyQ7(strm', lastMatch)
+            else if inp < #"1"
+              then if inp = #","
                   then yyQ6(strm', lastMatch)
                   else yyQ2(strm', lastMatch)
             else if inp = #"v"
-              then yyQ7(strm', lastMatch)
+              then yyQ8(strm', lastMatch)
               else yyQ2(strm', lastMatch)
       (* end case *))
 fun yyQ0 (strm, lastMatch : yymatch) = (case (yygetc(strm))
