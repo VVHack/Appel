@@ -13,13 +13,14 @@ fun process_string_exploded (#"\\"::c::suff) =
     else if c =  #"\"" then #"\""::(process_string_exploded suff)                  
     else process_string_exploded (c::suff)                                         
   | process_string_exploded (#"\""::suff) = process_string_exploded suff          
+  | process_string_exploded (#"\n"::suff) = process_string_exploded suff          
   | process_string_exploded (c::suff) = c::(process_string_exploded suff)          
   | process_string_exploded [] = [];                                               
                                                                                    
 fun process_string s = String.implode (process_string_exploded (String.explode s));
 
 %%
-chars="\""([a-zA-Z0-9]|"\\"|"\"")*"\"";
+chars="\""([a-zA-Z0-9]|"\\"|"\\\""|"\n")*"\"";
 
 %s INITIAL;
 %s STRING;
