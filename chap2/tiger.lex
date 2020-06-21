@@ -9,6 +9,7 @@ fun eof() = let val pos = hd(!linePos) in Tokens.EOF(pos,pos) end
 
 fun remove_whitespace_exploded (#" "::suff) = remove_whitespace_exploded suff
   | remove_whitespace_exploded (#"\t"::suff) = remove_whitespace_exploded suff
+  | remove_whitespace_exploded (#"\n"::suff) = remove_whitespace_exploded suff
   | remove_whitespace_exploded str_exploded = str_exploded;
 
 fun remove_whitespace str = String.implode (remove_whitespace_exploded (String.explode str));
@@ -28,7 +29,7 @@ fun process_string_exploded (#"\\" :: #"s" :: #"." :: #"." :: #"." :: #"\\" :: #
 fun process_string s = String.implode (process_string_exploded (String.explode s));
 
 %%
-chars="\""([a-zA-Z0-9]|"\\"|"\\\""|"\n")*"\"";
+chars="\""([a-zA-Z0-9]|"\\"|"\\\""|"\n"|" "|"\t"|".")*"\"";
 
 %s INITIAL;
 %s STRING;
