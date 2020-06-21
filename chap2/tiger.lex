@@ -29,7 +29,7 @@ fun process_string_exploded (#"\\" :: #"s" :: #"." :: #"." :: #"." :: #"\\" :: #
 fun process_string s = String.implode (process_string_exploded (String.explode s));
 
 %%
-chars="\""([a-zA-Z0-9]|"\\"|"\\\""|"\n"|" "|"\t"|".")*"\"";
+chars="\""([^"\""]|"\\\"")*"\"";
 
 %s INITIAL;
 %s STRING;
