@@ -28,20 +28,34 @@ fun process_string_exploded (#"\\" :: #"s" :: #"." :: #"." :: #"." :: #"\\" :: #
                                                                                    
 fun process_string s = String.implode (process_string_exploded (String.explode s));
 
+val comment_level = ref 0;
+
 %%
-chars="\""([^"\""]|"\\\"")*"\"";
+alphanumeric=[a-zA-Z0-9_];
+letter=[a-zA-Z];
+strchars="\""([^"\""]|"\\\"")*"\"";
 digits=[0-9];
+commentstart = "/*"[^"/*""*/"]*;
+commentend = [^"/*""*/"]*"*/";
 
 %s INITIAL;
-%s STRING;
+%s COMMENT;;
 %%
-<INITIAL> {chars} => (Tokens.STRING(process_string yytext, yypos, yypos + size yytext));
-<INITIAL> \n	=> (lineNum := !lineNum+1; linePos := yypos :: !linePos; continue());
-<INITIAL> " "	=> (continue());
-<INITIAL> ","	=> (Tokens.COMMA(yypos,yypos+1));
-<INITIAL> var  	=> (Tokens.VAR(yypos,yypos+3));
+<INITIAL> {strchars} => (Tokens.STRING(process_string yytext, yypos, yypos + size yytext));
 <INITIAL> {digits}+	=> (let val SOME num = Int.fromString(yytext) in
                         Tokens.INT(num, yypos, yypos + size yytext)
                         end);
-<INITIAL> .       => (ErrorMsg.error yypos ("illegal character " ^ yytext); continue());
+<INITIAL> var  	=> (Tokens.VAR(yypos,yypos+3));
+<INITIAL> {letter}{alphanumeric}* => (Tokens.ID(yytext, yypos, yypos + size yytext));
+<INITIAL> \n	=> (lineNum := !lineNum+1; linePos := yypos :: !linePos; continue());
+<INITIAL> " "	=> (continue());
+<INITIAL> "\t"	=> (continue());
+<INITIAL> ","	=> (Tokens.COMMA(yypos,yypos+1));
+<INITIAL> {commentstart}  => (YYBEGIN COMMENT; continue());
+<COMMENT> {commentstart}  => (comment_level := !comment_level+1; continue());
+<COMMENT> {commentend}  => ((if !comment_level = 0 then 
+                             YYBEGIN INITIAL
+                             else comment_level := !comment_level-1); continue());
+<COMMENT> .     => (continue());
+<INITIAL> .     => (ErrorMsg.error yypos ("illegal character " ^ yytext); continue());
 
