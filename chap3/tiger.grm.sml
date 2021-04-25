@@ -16,19 +16,36 @@ local open LrTable in
 val table=let val actionRows =
 "\
 \\001\000\001\000\000\000\000\000\
-\\005\000\000\000\
-\\006\000\000\000\
+\\001\000\002\000\007\000\000\000\
+\\001\000\002\000\009\000\000\000\
+\\001\000\003\000\006\000\043\000\005\000\000\000\
+\\001\000\006\000\008\000\000\000\
+\\001\000\027\000\010\000\000\000\
+\\013\000\000\000\
+\\014\000\000\000\
+\\015\000\000\000\
+\\016\000\000\000\
 \"
 val actionRowNumbers =
-"\002\000\001\000\000\000"
+"\003\000\007\000\006\000\001\000\
+\\008\000\004\000\002\000\005\000\
+\\003\000\009\000\000\000"
 val gotoT =
 "\
-\\001\000\001\000\002\000\002\000\000\000\
+\\001\000\002\000\002\000\010\000\003\000\001\000\000\000\
+\\000\000\
+\\000\000\
+\\000\000\
+\\000\000\
+\\000\000\
+\\000\000\
+\\000\000\
+\\001\000\009\000\003\000\001\000\000\000\
 \\000\000\
 \\000\000\
 \"
-val numstates = 3
-val numrules = 2
+val numstates = 11
+val numrules = 4
 val s = ref "" and index = ref 0
 val string_to_int = fn () => 
 let val i = !index
@@ -196,8 +213,29 @@ exp1 = exp1 ()
 end; ()))
  in ( LrTable.NT 1, ( result, exp1left, exp1right), rest671)
 end
-|  ( 1, ( rest671)) => let val  result = MlyValue.ntVOID (fn _ => ())
- in ( LrTable.NT 0, ( result, defaultPos, defaultPos), rest671)
+|  ( 1, ( ( _, ( MlyValue.ntVOID vardec1, vardec1left, vardec1right))
+ :: rest671)) => let val  result = MlyValue.ntVOID (fn _ => ( let val 
+ vardec1 = vardec1 ()
+ in ()
+end; ()))
+ in ( LrTable.NT 0, ( result, vardec1left, vardec1right), rest671)
+end
+|  ( 2, ( ( _, ( MlyValue.INT INT1, INT1left, INT1right)) :: rest671))
+ => let val  result = MlyValue.ntVOID (fn _ => ( let val  INT1 = INT1
+ ()
+ in ()
+end; ()))
+ in ( LrTable.NT 0, ( result, INT1left, INT1right), rest671)
+end
+|  ( 3, ( ( _, ( MlyValue.ntVOID exp1, _, exp1right)) :: _ :: ( _, ( 
+MlyValue.ID ID2, _, _)) :: _ :: ( _, ( MlyValue.ID ID1, _, _)) :: ( _,
+ ( _, VAR1left, _)) :: rest671)) => let val  result = MlyValue.ntVOID
+ (fn _ => ( let val  ID1 = ID1 ()
+ val  ID2 = ID2 ()
+ val  exp1 = exp1 ()
+ in ()
+end; ()))
+ in ( LrTable.NT 2, ( result, VAR1left, exp1right), rest671)
 end
 | _ => raise (mlyAction i392)
 end

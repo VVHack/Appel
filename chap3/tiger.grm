@@ -11,7 +11,7 @@
   | BREAK | NIL
   | FUNCTION | VAR | TYPE 
 
-%nonterm  exp | program
+%nonterm  exp | program | vardec
 
 %pos int
 %verbose
@@ -35,4 +35,7 @@
 program	: exp				()
 
 	
-exp: 			()
+exp: vardec 			()
+   | INT          ()
+
+vardec: VAR ID COLON ID ASSIGN exp ()

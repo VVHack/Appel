@@ -3,14 +3,26 @@ state 0:
 
 	program : . exp 
 
+	INT	shift 4
+	VAR	shift 3
 
-	exp	goto 1
-	program	goto 2
+	exp	goto 2
+	program	goto 10
+	vardec	goto 1
+
+	.	error
+
+
+state 1:
+
+	exp : vardec .  (reduce by rule 1)
+
+
 
 	.	reduce by rule 1
 
 
-state 1:
+state 2:
 
 	program : exp .  (reduce by rule 0)
 
@@ -19,7 +31,78 @@ state 1:
 	.	reduce by rule 0
 
 
-state 2:
+state 3:
+
+	vardec : VAR . ID COLON ID ASSIGN exp 
+
+	ID	shift 5
+
+
+	.	error
+
+
+state 4:
+
+	exp : INT .  (reduce by rule 2)
+
+
+
+	.	reduce by rule 2
+
+
+state 5:
+
+	vardec : VAR ID . COLON ID ASSIGN exp 
+
+	COLON	shift 6
+
+
+	.	error
+
+
+state 6:
+
+	vardec : VAR ID COLON . ID ASSIGN exp 
+
+	ID	shift 7
+
+
+	.	error
+
+
+state 7:
+
+	vardec : VAR ID COLON ID . ASSIGN exp 
+
+	ASSIGN	shift 8
+
+
+	.	error
+
+
+state 8:
+
+	vardec : VAR ID COLON ID ASSIGN . exp 
+
+	INT	shift 4
+	VAR	shift 3
+
+	exp	goto 9
+	vardec	goto 1
+
+	.	error
+
+
+state 9:
+
+	vardec : VAR ID COLON ID ASSIGN exp .  (reduce by rule 3)
+
+
+
+	.	reduce by rule 3
+
+
+state 10:
 
 
 	EOF	accept
@@ -27,5 +110,5 @@ state 2:
 
 	.	error
 
-1 of 4 action table entries left after compaction
-2 goto table entries
+7 of 20 action table entries left after compaction
+5 goto table entries
