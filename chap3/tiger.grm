@@ -33,6 +33,8 @@
 %value INT (1)
 %value STRING ("")
 
+%left PLUS
+
 %%
 
 program	: exp				()
