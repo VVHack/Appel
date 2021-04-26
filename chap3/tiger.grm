@@ -11,9 +11,10 @@
   | BREAK | NIL
   | FUNCTION | VAR | TYPE 
 
-%nonterm  exp | program | lvalue | rvalue 
+%nonterm  exp | program | lvalue | rvalue
           | letexp | nonempty_expseq | expseq
           | decs | dec | vardec | tydec | ty | nonempty_tyfields | tyfields | fundec
+          | arithmetic
 
 %pos int
 %verbose
@@ -38,6 +39,7 @@ program	: exp				()
 
 	
 exp: letexp 			() 
+   | arithmetic ()
    | LPAREN expseq RPAREN ()
    | lvalue       ()
    | rvalue       ()
@@ -73,3 +75,5 @@ nonempty_tyfields: ID COLON ID ()
 
 fundec: FUNCTION ID LPAREN tyfields RPAREN EQ exp ()
       | FUNCTION ID LPAREN tyfields RPAREN COLON ID EQ exp ()
+
+arithmetic: exp PLUS exp ()
