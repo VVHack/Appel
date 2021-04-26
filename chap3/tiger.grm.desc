@@ -3,12 +3,15 @@ state 0:
 
 	program : . exp 
 
-	ID	shift 7
-	INT	shift 6
-	LET	shift 5
+	ID	shift 10
+	INT	shift 9
+	STRING	shift 8
+	LPAREN	shift 7
+	LET	shift 6
+	NIL	shift 5
 
 	exp	goto 4
-	program	goto 62
+	program	goto 67
 	lvalue	goto 3
 	rvalue	goto 2
 	letexp	goto 1
@@ -27,24 +30,24 @@ state 1:
 
 state 2:
 
-	exp : rvalue .  (reduce by rule 3)
+	exp : rvalue .  (reduce by rule 4)
 
 
 
-	.	reduce by rule 3
+	.	reduce by rule 4
 
 
 state 3:
 
-	exp : lvalue .  (reduce by rule 2)
+	exp : lvalue .  (reduce by rule 3)
 	lvalue : lvalue . DOT ID 
 	lvalue : lvalue . LBRACK exp RBRACK 
 
-	LBRACK	shift 9
-	DOT	shift 8
+	LBRACK	shift 12
+	DOT	shift 11
 
 
-	.	reduce by rule 2
+	.	reduce by rule 3
 
 
 state 4:
@@ -58,144 +61,81 @@ state 4:
 
 state 5:
 
-	letexp : LET . decs IN expseq END 
+	exp : NIL .  (reduce by rule 5)
 
-	FUNCTION	shift 17
-	VAR	shift 16
-	TYPE	shift 15
 
-	decs	goto 14
-	dec	goto 13
-	vardec	goto 12
-	tydec	goto 11
-	fundec	goto 10
 
-	.	reduce by rule 13
+	.	reduce by rule 5
 
 
 state 6:
 
-	rvalue : INT .  (reduce by rule 7)
+	letexp : LET . decs IN expseq END 
 
+	FUNCTION	shift 20
+	VAR	shift 19
+	TYPE	shift 18
 
-
-	.	reduce by rule 7
-
-
-state 7:
-
-	lvalue : ID .  (reduce by rule 4)
-
-
-
-	.	reduce by rule 4
-
-
-state 8:
-
-	lvalue : lvalue DOT . ID 
-
-	ID	shift 18
-
-
-	.	error
-
-
-state 9:
-
-	lvalue : lvalue LBRACK . exp RBRACK 
-
-	ID	shift 7
-	INT	shift 6
-	LET	shift 5
-
-	exp	goto 19
-	lvalue	goto 3
-	rvalue	goto 2
-	letexp	goto 1
-
-	.	error
-
-
-state 10:
-
-	dec : fundec .  (reduce by rule 17)
-
-
-
-	.	reduce by rule 17
-
-
-state 11:
-
-	dec : tydec .  (reduce by rule 16)
-
-
+	decs	goto 17
+	dec	goto 16
+	vardec	goto 15
+	tydec	goto 14
+	fundec	goto 13
 
 	.	reduce by rule 16
 
 
-state 12:
+state 7:
 
-	dec : vardec .  (reduce by rule 15)
+	exp : LPAREN . expseq RPAREN 
 
+	ID	shift 10
+	INT	shift 9
+	STRING	shift 8
+	LPAREN	shift 7
+	LET	shift 6
+	NIL	shift 5
 
+	exp	goto 23
+	lvalue	goto 3
+	rvalue	goto 2
+	letexp	goto 1
+	nonempty_expseq	goto 22
+	expseq	goto 21
 
-	.	reduce by rule 15
-
-
-state 13:
-
-	decs : dec . decs 
-
-	FUNCTION	shift 17
-	VAR	shift 16
-	TYPE	shift 15
-
-	decs	goto 20
-	dec	goto 13
-	vardec	goto 12
-	tydec	goto 11
-	fundec	goto 10
-
-	.	reduce by rule 13
+	.	reduce by rule 12
 
 
-state 14:
+state 8:
 
-	letexp : LET decs . IN expseq END 
-
-	IN	shift 21
+	rvalue : STRING .  (reduce by rule 10)
 
 
-	.	error
+
+	.	reduce by rule 10
 
 
-state 15:
+state 9:
 
-	tydec : TYPE . ID EQ ty 
-
-	ID	shift 22
+	rvalue : INT .  (reduce by rule 9)
 
 
-	.	error
+
+	.	reduce by rule 9
 
 
-state 16:
+state 10:
 
-	vardec : VAR . ID COLON ID ASSIGN exp 
-	vardec : VAR . ID ASSIGN exp 
-
-	ID	shift 23
+	lvalue : ID .  (reduce by rule 6)
 
 
-	.	error
+
+	.	reduce by rule 6
 
 
-state 17:
+state 11:
 
-	fundec : FUNCTION . ID LPAREN tyfields RPAREN EQ exp 
-	fundec : FUNCTION . ID LPAREN tyfields RPAREN COLON ID EQ exp 
+	lvalue : lvalue DOT . ID 
 
 	ID	shift 24
 
@@ -203,20 +143,95 @@ state 17:
 	.	error
 
 
+state 12:
+
+	lvalue : lvalue LBRACK . exp RBRACK 
+
+	ID	shift 10
+	INT	shift 9
+	STRING	shift 8
+	LPAREN	shift 7
+	LET	shift 6
+	NIL	shift 5
+
+	exp	goto 25
+	lvalue	goto 3
+	rvalue	goto 2
+	letexp	goto 1
+
+	.	error
+
+
+state 13:
+
+	dec : fundec .  (reduce by rule 20)
+
+
+
+	.	reduce by rule 20
+
+
+state 14:
+
+	dec : tydec .  (reduce by rule 19)
+
+
+
+	.	reduce by rule 19
+
+
+state 15:
+
+	dec : vardec .  (reduce by rule 18)
+
+
+
+	.	reduce by rule 18
+
+
+state 16:
+
+	decs : dec . decs 
+
+	FUNCTION	shift 20
+	VAR	shift 19
+	TYPE	shift 18
+
+	decs	goto 26
+	dec	goto 16
+	vardec	goto 15
+	tydec	goto 14
+	fundec	goto 13
+
+	.	reduce by rule 16
+
+
+state 17:
+
+	letexp : LET decs . IN expseq END 
+
+	IN	shift 27
+
+
+	.	error
+
+
 state 18:
 
-	lvalue : lvalue DOT ID .  (reduce by rule 5)
+	tydec : TYPE . ID EQ ty 
+
+	ID	shift 28
 
 
-
-	.	reduce by rule 5
+	.	error
 
 
 state 19:
 
-	lvalue : lvalue LBRACK exp . RBRACK 
+	vardec : VAR . ID COLON ID ASSIGN exp 
+	vardec : VAR . ID ASSIGN exp 
 
-	RBRACK	shift 25
+	ID	shift 29
 
 
 	.	error
@@ -224,123 +239,146 @@ state 19:
 
 state 20:
 
-	decs : dec decs .  (reduce by rule 14)
+	fundec : FUNCTION . ID LPAREN tyfields RPAREN EQ exp 
+	fundec : FUNCTION . ID LPAREN tyfields RPAREN COLON ID EQ exp 
+
+	ID	shift 30
+
+
+	.	error
+
+
+state 21:
+
+	exp : LPAREN expseq . RPAREN 
+
+	RPAREN	shift 31
+
+
+	.	error
+
+
+state 22:
+
+	nonempty_expseq : nonempty_expseq . SEMICOLON exp 
+	expseq : nonempty_expseq .  (reduce by rule 13)
+
+	SEMICOLON	shift 32
+
+
+	.	reduce by rule 13
+
+
+state 23:
+
+	nonempty_expseq : exp .  (reduce by rule 14)
 
 
 
 	.	reduce by rule 14
 
 
-state 21:
-
-	letexp : LET decs IN . expseq END 
-
-	ID	shift 7
-	INT	shift 6
-	LET	shift 5
-
-	exp	goto 28
-	lvalue	goto 3
-	rvalue	goto 2
-	letexp	goto 1
-	nonempty_expseq	goto 27
-	expseq	goto 26
-
-	.	reduce by rule 9
-
-
-state 22:
-
-	tydec : TYPE ID . EQ ty 
-
-	EQ	shift 29
-
-
-	.	error
-
-
-state 23:
-
-	vardec : VAR ID . COLON ID ASSIGN exp 
-	vardec : VAR ID . ASSIGN exp 
-
-	COLON	shift 31
-	ASSIGN	shift 30
-
-
-	.	error
-
-
 state 24:
 
-	fundec : FUNCTION ID . LPAREN tyfields RPAREN EQ exp 
-	fundec : FUNCTION ID . LPAREN tyfields RPAREN COLON ID EQ exp 
-
-	LPAREN	shift 32
+	lvalue : lvalue DOT ID .  (reduce by rule 7)
 
 
-	.	error
+
+	.	reduce by rule 7
 
 
 state 25:
 
-	lvalue : lvalue LBRACK exp RBRACK .  (reduce by rule 6)
+	lvalue : lvalue LBRACK exp . RBRACK 
 
-
-
-	.	reduce by rule 6
-
-
-state 26:
-
-	letexp : LET decs IN expseq . END 
-
-	END	shift 33
+	RBRACK	shift 33
 
 
 	.	error
 
 
+state 26:
+
+	decs : dec decs .  (reduce by rule 17)
+
+
+
+	.	reduce by rule 17
+
+
 state 27:
 
-	nonempty_expseq : nonempty_expseq . SEMICOLON exp 
-	expseq : nonempty_expseq .  (reduce by rule 10)
+	letexp : LET decs IN . expseq END 
 
-	SEMICOLON	shift 34
+	ID	shift 10
+	INT	shift 9
+	STRING	shift 8
+	LPAREN	shift 7
+	LET	shift 6
+	NIL	shift 5
 
+	exp	goto 23
+	lvalue	goto 3
+	rvalue	goto 2
+	letexp	goto 1
+	nonempty_expseq	goto 22
+	expseq	goto 34
 
-	.	reduce by rule 10
+	.	reduce by rule 12
 
 
 state 28:
 
-	nonempty_expseq : exp .  (reduce by rule 11)
+	tydec : TYPE ID . EQ ty 
+
+	EQ	shift 35
 
 
-
-	.	reduce by rule 11
+	.	error
 
 
 state 29:
 
-	tydec : TYPE ID EQ . ty 
+	vardec : VAR ID . COLON ID ASSIGN exp 
+	vardec : VAR ID . ASSIGN exp 
 
-	ID	shift 38
-	LBRACE	shift 37
-	ARRAY	shift 36
+	COLON	shift 37
+	ASSIGN	shift 36
 
-	ty	goto 35
 
 	.	error
 
 
 state 30:
 
-	vardec : VAR ID ASSIGN . exp 
+	fundec : FUNCTION ID . LPAREN tyfields RPAREN EQ exp 
+	fundec : FUNCTION ID . LPAREN tyfields RPAREN COLON ID EQ exp 
 
-	ID	shift 7
-	INT	shift 6
-	LET	shift 5
+	LPAREN	shift 38
+
+
+	.	error
+
+
+state 31:
+
+	exp : LPAREN expseq RPAREN .  (reduce by rule 2)
+
+
+
+	.	reduce by rule 2
+
+
+state 32:
+
+	nonempty_expseq : nonempty_expseq SEMICOLON . exp 
+
+	ID	shift 10
+	INT	shift 9
+	STRING	shift 8
+	LPAREN	shift 7
+	LET	shift 6
+	NIL	shift 5
 
 	exp	goto 39
 	lvalue	goto 3
@@ -350,32 +388,9 @@ state 30:
 	.	error
 
 
-state 31:
-
-	vardec : VAR ID COLON . ID ASSIGN exp 
-
-	ID	shift 40
-
-
-	.	error
-
-
-state 32:
-
-	fundec : FUNCTION ID LPAREN . tyfields RPAREN EQ exp 
-	fundec : FUNCTION ID LPAREN . tyfields RPAREN COLON ID EQ exp 
-
-	ID	shift 43
-
-	nonempty_tyfields	goto 42
-	tyfields	goto 41
-
-	.	reduce by rule 24
-
-
 state 33:
 
-	letexp : LET decs IN expseq END .  (reduce by rule 8)
+	lvalue : lvalue LBRACK exp RBRACK .  (reduce by rule 8)
 
 
 
@@ -384,13 +399,39 @@ state 33:
 
 state 34:
 
-	nonempty_expseq : nonempty_expseq SEMICOLON . exp 
+	letexp : LET decs IN expseq . END 
 
-	ID	shift 7
-	INT	shift 6
-	LET	shift 5
+	END	shift 40
 
-	exp	goto 44
+
+	.	error
+
+
+state 35:
+
+	tydec : TYPE ID EQ . ty 
+
+	ID	shift 44
+	LBRACE	shift 43
+	ARRAY	shift 42
+
+	ty	goto 41
+
+	.	error
+
+
+state 36:
+
+	vardec : VAR ID ASSIGN . exp 
+
+	ID	shift 10
+	INT	shift 9
+	STRING	shift 8
+	LPAREN	shift 7
+	LET	shift 6
+	NIL	shift 5
+
+	exp	goto 45
 	lvalue	goto 3
 	rvalue	goto 2
 	letexp	goto 1
@@ -398,120 +439,101 @@ state 34:
 	.	error
 
 
-state 35:
+state 37:
 
-	tydec : TYPE ID EQ ty .  (reduce by rule 20)
+	vardec : VAR ID COLON . ID ASSIGN exp 
 
-
-
-	.	reduce by rule 20
-
-
-state 36:
-
-	ty : ARRAY . OF ID 
-
-	OF	shift 45
+	ID	shift 46
 
 
 	.	error
-
-
-state 37:
-
-	ty : LBRACE . tyfields RBRACE 
-
-	ID	shift 43
-
-	nonempty_tyfields	goto 42
-	tyfields	goto 46
-
-	.	reduce by rule 24
 
 
 state 38:
 
-	ty : ID .  (reduce by rule 21)
+	fundec : FUNCTION ID LPAREN . tyfields RPAREN EQ exp 
+	fundec : FUNCTION ID LPAREN . tyfields RPAREN COLON ID EQ exp 
 
+	ID	shift 49
 
+	nonempty_tyfields	goto 48
+	tyfields	goto 47
 
-	.	reduce by rule 21
+	.	reduce by rule 27
 
 
 state 39:
 
-	vardec : VAR ID ASSIGN exp .  (reduce by rule 19)
+	nonempty_expseq : nonempty_expseq SEMICOLON exp .  (reduce by rule 15)
 
 
 
-	.	reduce by rule 19
+	.	reduce by rule 15
 
 
 state 40:
 
-	vardec : VAR ID COLON ID . ASSIGN exp 
-
-	ASSIGN	shift 47
+	letexp : LET decs IN expseq END .  (reduce by rule 11)
 
 
-	.	error
+
+	.	reduce by rule 11
 
 
 state 41:
 
-	fundec : FUNCTION ID LPAREN tyfields . RPAREN EQ exp 
-	fundec : FUNCTION ID LPAREN tyfields . RPAREN COLON ID EQ exp 
-
-	RPAREN	shift 48
+	tydec : TYPE ID EQ ty .  (reduce by rule 23)
 
 
-	.	error
+
+	.	reduce by rule 23
 
 
 state 42:
 
-	tyfields : nonempty_tyfields .  (reduce by rule 25)
+	ty : ARRAY . OF ID 
+
+	OF	shift 50
 
 
-
-	.	reduce by rule 25
+	.	error
 
 
 state 43:
 
-	nonempty_tyfields : ID . COLON ID 
-	nonempty_tyfields : ID . COLON ID COMMA nonempty_tyfields 
+	ty : LBRACE . tyfields RBRACE 
 
-	COLON	shift 49
+	ID	shift 49
 
+	nonempty_tyfields	goto 48
+	tyfields	goto 51
 
-	.	error
+	.	reduce by rule 27
 
 
 state 44:
 
-	nonempty_expseq : nonempty_expseq SEMICOLON exp .  (reduce by rule 12)
+	ty : ID .  (reduce by rule 24)
 
 
 
-	.	reduce by rule 12
+	.	reduce by rule 24
 
 
 state 45:
 
-	ty : ARRAY OF . ID 
-
-	ID	shift 50
+	vardec : VAR ID ASSIGN exp .  (reduce by rule 22)
 
 
-	.	error
+
+	.	reduce by rule 22
 
 
 state 46:
 
-	ty : LBRACE tyfields . RBRACE 
+	vardec : VAR ID COLON ID . ASSIGN exp 
 
-	RBRACE	shift 51
+	ASSIGN	shift 52
 
 
 	.	error
@@ -519,38 +541,30 @@ state 46:
 
 state 47:
 
-	vardec : VAR ID COLON ID ASSIGN . exp 
+	fundec : FUNCTION ID LPAREN tyfields . RPAREN EQ exp 
+	fundec : FUNCTION ID LPAREN tyfields . RPAREN COLON ID EQ exp 
 
-	ID	shift 7
-	INT	shift 6
-	LET	shift 5
+	RPAREN	shift 53
 
-	exp	goto 52
-	lvalue	goto 3
-	rvalue	goto 2
-	letexp	goto 1
 
 	.	error
 
 
 state 48:
 
-	fundec : FUNCTION ID LPAREN tyfields RPAREN . EQ exp 
-	fundec : FUNCTION ID LPAREN tyfields RPAREN . COLON ID EQ exp 
-
-	COLON	shift 54
-	EQ	shift 53
+	tyfields : nonempty_tyfields .  (reduce by rule 28)
 
 
-	.	error
+
+	.	reduce by rule 28
 
 
 state 49:
 
-	nonempty_tyfields : ID COLON . ID 
-	nonempty_tyfields : ID COLON . ID COMMA nonempty_tyfields 
+	nonempty_tyfields : ID . COLON ID 
+	nonempty_tyfields : ID . COLON ID COMMA nonempty_tyfields 
 
-	ID	shift 55
+	COLON	shift 54
 
 
 	.	error
@@ -558,40 +572,36 @@ state 49:
 
 state 50:
 
-	ty : ARRAY OF ID .  (reduce by rule 23)
+	ty : ARRAY OF . ID 
+
+	ID	shift 55
 
 
-
-	.	reduce by rule 23
+	.	error
 
 
 state 51:
 
-	ty : LBRACE tyfields RBRACE .  (reduce by rule 22)
+	ty : LBRACE tyfields . RBRACE 
+
+	RBRACE	shift 56
 
 
-
-	.	reduce by rule 22
+	.	error
 
 
 state 52:
 
-	vardec : VAR ID COLON ID ASSIGN exp .  (reduce by rule 18)
+	vardec : VAR ID COLON ID ASSIGN . exp 
 
+	ID	shift 10
+	INT	shift 9
+	STRING	shift 8
+	LPAREN	shift 7
+	LET	shift 6
+	NIL	shift 5
 
-
-	.	reduce by rule 18
-
-
-state 53:
-
-	fundec : FUNCTION ID LPAREN tyfields RPAREN EQ . exp 
-
-	ID	shift 7
-	INT	shift 6
-	LET	shift 5
-
-	exp	goto 56
+	exp	goto 57
 	lvalue	goto 3
 	rvalue	goto 2
 	letexp	goto 1
@@ -599,11 +609,24 @@ state 53:
 	.	error
 
 
+state 53:
+
+	fundec : FUNCTION ID LPAREN tyfields RPAREN . EQ exp 
+	fundec : FUNCTION ID LPAREN tyfields RPAREN . COLON ID EQ exp 
+
+	COLON	shift 59
+	EQ	shift 58
+
+
+	.	error
+
+
 state 54:
 
-	fundec : FUNCTION ID LPAREN tyfields RPAREN COLON . ID EQ exp 
+	nonempty_tyfields : ID COLON . ID 
+	nonempty_tyfields : ID COLON . ID COMMA nonempty_tyfields 
 
-	ID	shift 57
+	ID	shift 60
 
 
 	.	error
@@ -611,10 +634,8 @@ state 54:
 
 state 55:
 
-	nonempty_tyfields : ID COLON ID .  (reduce by rule 26)
-	nonempty_tyfields : ID COLON ID . COMMA nonempty_tyfields 
+	ty : ARRAY OF ID .  (reduce by rule 26)
 
-	COMMA	shift 58
 
 
 	.	reduce by rule 26
@@ -622,41 +643,32 @@ state 55:
 
 state 56:
 
-	fundec : FUNCTION ID LPAREN tyfields RPAREN EQ exp .  (reduce by rule 28)
+	ty : LBRACE tyfields RBRACE .  (reduce by rule 25)
 
 
 
-	.	reduce by rule 28
+	.	reduce by rule 25
 
 
 state 57:
 
-	fundec : FUNCTION ID LPAREN tyfields RPAREN COLON ID . EQ exp 
-
-	EQ	shift 59
+	vardec : VAR ID COLON ID ASSIGN exp .  (reduce by rule 21)
 
 
-	.	error
+
+	.	reduce by rule 21
 
 
 state 58:
 
-	nonempty_tyfields : ID COLON ID COMMA . nonempty_tyfields 
+	fundec : FUNCTION ID LPAREN tyfields RPAREN EQ . exp 
 
-	ID	shift 43
-
-	nonempty_tyfields	goto 60
-
-	.	error
-
-
-state 59:
-
-	fundec : FUNCTION ID LPAREN tyfields RPAREN COLON ID EQ . exp 
-
-	ID	shift 7
-	INT	shift 6
-	LET	shift 5
+	ID	shift 10
+	INT	shift 9
+	STRING	shift 8
+	LPAREN	shift 7
+	LET	shift 6
+	NIL	shift 5
 
 	exp	goto 61
 	lvalue	goto 3
@@ -666,25 +678,95 @@ state 59:
 	.	error
 
 
+state 59:
+
+	fundec : FUNCTION ID LPAREN tyfields RPAREN COLON . ID EQ exp 
+
+	ID	shift 62
+
+
+	.	error
+
+
 state 60:
 
-	nonempty_tyfields : ID COLON ID COMMA nonempty_tyfields .  (reduce by rule 27)
+	nonempty_tyfields : ID COLON ID .  (reduce by rule 29)
+	nonempty_tyfields : ID COLON ID . COMMA nonempty_tyfields 
 
-
-
-	.	reduce by rule 27
-
-
-state 61:
-
-	fundec : FUNCTION ID LPAREN tyfields RPAREN COLON ID EQ exp .  (reduce by rule 29)
-
+	COMMA	shift 63
 
 
 	.	reduce by rule 29
 
 
+state 61:
+
+	fundec : FUNCTION ID LPAREN tyfields RPAREN EQ exp .  (reduce by rule 31)
+
+
+
+	.	reduce by rule 31
+
+
 state 62:
+
+	fundec : FUNCTION ID LPAREN tyfields RPAREN COLON ID . EQ exp 
+
+	EQ	shift 64
+
+
+	.	error
+
+
+state 63:
+
+	nonempty_tyfields : ID COLON ID COMMA . nonempty_tyfields 
+
+	ID	shift 49
+
+	nonempty_tyfields	goto 65
+
+	.	error
+
+
+state 64:
+
+	fundec : FUNCTION ID LPAREN tyfields RPAREN COLON ID EQ . exp 
+
+	ID	shift 10
+	INT	shift 9
+	STRING	shift 8
+	LPAREN	shift 7
+	LET	shift 6
+	NIL	shift 5
+
+	exp	goto 66
+	lvalue	goto 3
+	rvalue	goto 2
+	letexp	goto 1
+
+	.	error
+
+
+state 65:
+
+	nonempty_tyfields : ID COLON ID COMMA nonempty_tyfields .  (reduce by rule 30)
+
+
+
+	.	reduce by rule 30
+
+
+state 66:
+
+	fundec : FUNCTION ID LPAREN tyfields RPAREN COLON ID EQ exp .  (reduce by rule 32)
+
+
+
+	.	reduce by rule 32
+
+
+state 67:
 
 
 	EOF	accept
@@ -692,5 +774,5 @@ state 62:
 
 	.	error
 
-42 of 127 action table entries left after compaction
-51 goto table entries
+49 of 163 action table entries left after compaction
+57 goto table entries

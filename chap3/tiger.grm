@@ -38,14 +38,16 @@ program	: exp				()
 
 	
 exp: letexp 			() 
+   | LPAREN expseq RPAREN ()
    | lvalue       ()
    | rvalue       ()
+   | NIL          ()
 
 lvalue: ID ()
       | lvalue DOT ID ()
       | lvalue LBRACK exp RBRACK ()
 
-rvalue: INT ()
+rvalue: INT () | STRING ()
 
 letexp: LET decs IN expseq END ()
 
