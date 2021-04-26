@@ -11,7 +11,7 @@
   | BREAK | NIL
   | FUNCTION | VAR | TYPE 
 
-%nonterm  exp | program | vardec
+%nonterm  exp | program | letexp | nonempty_expseq | expseq | decs | dec | vardec
 
 %pos int
 %verbose
@@ -35,7 +35,21 @@
 program	: exp				()
 
 	
-exp: vardec 			()
+exp: vardec 			() 
    | INT          ()
 
+letexp: LET decs IN expseq END ()
+
+expseq: ()
+      | nonempty_expseq ()
+
+nonempty_expseq: exp ()
+               | nonempty_expseq SEMICOLON exp ()
+
+decs: ()
+    | dec decs ()
+
+dec: vardec ()
+
 vardec: VAR ID COLON ID ASSIGN exp ()
+      | VAR ID ASSIGN exp ()

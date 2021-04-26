@@ -17,35 +17,39 @@ val table=let val actionRows =
 "\
 \\001\000\001\000\000\000\000\000\
 \\001\000\002\000\007\000\000\000\
-\\001\000\002\000\009\000\000\000\
+\\001\000\002\000\011\000\000\000\
 \\001\000\003\000\006\000\043\000\005\000\000\000\
-\\001\000\006\000\008\000\000\000\
-\\001\000\027\000\010\000\000\000\
-\\013\000\000\000\
-\\014\000\000\000\
+\\001\000\006\000\009\000\027\000\008\000\000\000\
+\\001\000\027\000\012\000\000\000\
 \\015\000\000\000\
 \\016\000\000\000\
+\\017\000\000\000\
+\\026\000\000\000\
+\\027\000\000\000\
 \"
 val actionRowNumbers =
 "\003\000\007\000\006\000\001\000\
-\\008\000\004\000\002\000\005\000\
-\\003\000\009\000\000\000"
+\\008\000\004\000\003\000\002\000\
+\\010\000\005\000\003\000\009\000\
+\\000\000"
 val gotoT =
 "\
-\\001\000\002\000\002\000\010\000\003\000\001\000\000\000\
+\\001\000\002\000\002\000\012\000\008\000\001\000\000\000\
 \\000\000\
 \\000\000\
 \\000\000\
 \\000\000\
 \\000\000\
+\\001\000\008\000\008\000\001\000\000\000\
 \\000\000\
 \\000\000\
-\\001\000\009\000\003\000\001\000\000\000\
+\\000\000\
+\\001\000\011\000\008\000\001\000\000\000\
 \\000\000\
 \\000\000\
 \"
-val numstates = 11
-val numrules = 4
+val numstates = 13
+val numrules = 13
 val s = ref "" and index = ref 0
 val string_to_int = fn () => 
 let val i = !index
@@ -227,7 +231,63 @@ end
 end; ()))
  in ( LrTable.NT 0, ( result, INT1left, INT1right), rest671)
 end
-|  ( 3, ( ( _, ( MlyValue.ntVOID exp1, _, exp1right)) :: _ :: ( _, ( 
+|  ( 3, ( ( _, ( _, _, END1right)) :: ( _, ( MlyValue.ntVOID expseq1,
+ _, _)) :: _ :: ( _, ( MlyValue.ntVOID decs1, _, _)) :: ( _, ( _, 
+LET1left, _)) :: rest671)) => let val  result = MlyValue.ntVOID (fn _
+ => ( let val  decs1 = decs1 ()
+ val  expseq1 = expseq1 ()
+ in ()
+end; ()))
+ in ( LrTable.NT 2, ( result, LET1left, END1right), rest671)
+end
+|  ( 4, ( rest671)) => let val  result = MlyValue.ntVOID (fn _ => ())
+ in ( LrTable.NT 4, ( result, defaultPos, defaultPos), rest671)
+end
+|  ( 5, ( ( _, ( MlyValue.ntVOID nonempty_expseq1, 
+nonempty_expseq1left, nonempty_expseq1right)) :: rest671)) => let val 
+ result = MlyValue.ntVOID (fn _ => ( let val  nonempty_expseq1 = 
+nonempty_expseq1 ()
+ in ()
+end; ()))
+ in ( LrTable.NT 4, ( result, nonempty_expseq1left, 
+nonempty_expseq1right), rest671)
+end
+|  ( 6, ( ( _, ( MlyValue.ntVOID exp1, exp1left, exp1right)) :: 
+rest671)) => let val  result = MlyValue.ntVOID (fn _ => ( let val  
+exp1 = exp1 ()
+ in ()
+end; ()))
+ in ( LrTable.NT 3, ( result, exp1left, exp1right), rest671)
+end
+|  ( 7, ( ( _, ( MlyValue.ntVOID exp1, _, exp1right)) :: _ :: ( _, ( 
+MlyValue.ntVOID nonempty_expseq1, nonempty_expseq1left, _)) :: rest671
+)) => let val  result = MlyValue.ntVOID (fn _ => ( let val  
+nonempty_expseq1 = nonempty_expseq1 ()
+ val  exp1 = exp1 ()
+ in ()
+end; ()))
+ in ( LrTable.NT 3, ( result, nonempty_expseq1left, exp1right), 
+rest671)
+end
+|  ( 8, ( rest671)) => let val  result = MlyValue.ntVOID (fn _ => ())
+ in ( LrTable.NT 5, ( result, defaultPos, defaultPos), rest671)
+end
+|  ( 9, ( ( _, ( MlyValue.ntVOID decs1, _, decs1right)) :: ( _, ( 
+MlyValue.ntVOID dec1, dec1left, _)) :: rest671)) => let val  result = 
+MlyValue.ntVOID (fn _ => ( let val  dec1 = dec1 ()
+ val  decs1 = decs1 ()
+ in ()
+end; ()))
+ in ( LrTable.NT 5, ( result, dec1left, decs1right), rest671)
+end
+|  ( 10, ( ( _, ( MlyValue.ntVOID vardec1, vardec1left, vardec1right))
+ :: rest671)) => let val  result = MlyValue.ntVOID (fn _ => ( let val 
+ vardec1 = vardec1 ()
+ in ()
+end; ()))
+ in ( LrTable.NT 6, ( result, vardec1left, vardec1right), rest671)
+end
+|  ( 11, ( ( _, ( MlyValue.ntVOID exp1, _, exp1right)) :: _ :: ( _, ( 
 MlyValue.ID ID2, _, _)) :: _ :: ( _, ( MlyValue.ID ID1, _, _)) :: ( _,
  ( _, VAR1left, _)) :: rest671)) => let val  result = MlyValue.ntVOID
  (fn _ => ( let val  ID1 = ID1 ()
@@ -235,7 +295,15 @@ MlyValue.ID ID2, _, _)) :: _ :: ( _, ( MlyValue.ID ID1, _, _)) :: ( _,
  val  exp1 = exp1 ()
  in ()
 end; ()))
- in ( LrTable.NT 2, ( result, VAR1left, exp1right), rest671)
+ in ( LrTable.NT 7, ( result, VAR1left, exp1right), rest671)
+end
+|  ( 12, ( ( _, ( MlyValue.ntVOID exp1, _, exp1right)) :: _ :: ( _, ( 
+MlyValue.ID ID1, _, _)) :: ( _, ( _, VAR1left, _)) :: rest671)) => let
+ val  result = MlyValue.ntVOID (fn _ => ( let val  ID1 = ID1 ()
+ val  exp1 = exp1 ()
+ in ()
+end; ()))
+ in ( LrTable.NT 7, ( result, VAR1left, exp1right), rest671)
 end
 | _ => raise (mlyAction i392)
 end
