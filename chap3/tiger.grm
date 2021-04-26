@@ -13,7 +13,7 @@
 
 %nonterm  exp | program | lvalue | rvalue 
           | letexp | nonempty_expseq | expseq
-          | decs | dec | vardec | tydec | ty | nonempty_tyfields | tyfields
+          | decs | dec | vardec | tydec | ty | nonempty_tyfields | tyfields | fundec
 
 %pos int
 %verbose
@@ -54,7 +54,7 @@ nonempty_expseq: exp ()
 decs: ()
     | dec decs ()
 
-dec: vardec ()
+dec: vardec () | tydec () | fundec ()
 
 vardec: VAR ID COLON ID ASSIGN exp ()
       | VAR ID ASSIGN exp ()
@@ -66,3 +66,6 @@ ty: ID () | LBRACE tyfields RBRACE () | ARRAY OF ID ()
 tyfields: () | nonempty_tyfields ()
 nonempty_tyfields: ID COLON ID ()
                  | ID COLON ID COMMA nonempty_tyfields ()
+
+fundec: FUNCTION ID LPAREN tyfields RPAREN EQ exp ()
+      | FUNCTION ID LPAREN tyfields RPAREN COLON ID EQ exp ()
