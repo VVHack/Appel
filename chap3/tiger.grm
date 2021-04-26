@@ -5,7 +5,7 @@
   | INT of int | STRING of string 
   | COMMA | COLON | SEMICOLON | LPAREN | RPAREN | LBRACK | RBRACK 
   | LBRACE | RBRACE | DOT 
-  | PLUS | MINUS | TIMES | DIVIDE | EQ | NEQ | LT | LE | GT | GE
+  | UMINUS | PLUS | MINUS | TIMES | DIVIDE | EQ | NEQ | LT | LE | GT | GE
   | AND | OR | ASSIGN
   | ARRAY | IF | THEN | ELSE | WHILE | FOR | TO | DO | LET | IN | END | OF 
   | BREAK | NIL
@@ -35,6 +35,7 @@
 
 %left PLUS MINUS
 %left TIMES DIVIDE
+%left UMINUS
 
 %%
 
@@ -43,6 +44,7 @@ program	: exp				()
 	
 exp: letexp 			() 
    | arithmetic ()
+   | MINUS exp %prec UMINUS ()
    | LPAREN expseq RPAREN ()
    | lvalue       ()
    | rvalue       ()
