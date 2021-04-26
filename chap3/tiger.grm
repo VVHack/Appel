@@ -15,6 +15,7 @@
           | letexp | nonempty_expseq | expseq
           | decs | dec | vardec | tydec | ty | nonempty_tyfields | tyfields | fundec
           | arithmetic
+          | function_call | parameters | nonempty_parameters
 
 %pos int
 %verbose
@@ -43,6 +44,7 @@ program	: exp				()
 
 	
 exp: letexp 			() 
+   | function_call ()
    | arithmetic ()
    | MINUS exp %prec UMINUS ()
    | LPAREN expseq RPAREN ()
@@ -85,3 +87,9 @@ arithmetic: exp PLUS exp ()
           | exp MINUS exp ()
           | exp TIMES exp ()
           | exp DIVIDE exp ()
+
+function_call: ID LPAREN parameters RPAREN ()
+
+parameters: () | nonempty_parameters ()
+nonempty_parameters: exp ()
+                   | nonempty_parameters COMMA exp ()
