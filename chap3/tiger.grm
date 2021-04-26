@@ -42,6 +42,8 @@ exp: letexp 			()
    | rvalue       ()
 
 lvalue: ID ()
+      | lvalue DOT ID ()
+      | lvalue LBRACK exp RBRACK ()
 
 rvalue: INT ()
 

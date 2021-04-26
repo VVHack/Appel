@@ -18,138 +18,148 @@ val table=let val actionRows =
 \\001\000\001\000\000\000\000\000\
 \\001\000\002\000\009\000\003\000\008\000\036\000\007\000\000\000\
 \\001\000\002\000\020\000\000\000\
-\\001\000\002\000\021\000\000\000\
-\\001\000\002\000\022\000\000\000\
-\\001\000\002\000\035\000\012\000\034\000\028\000\033\000\000\000\
-\\001\000\002\000\037\000\000\000\
-\\001\000\002\000\040\000\000\000\
-\\001\000\002\000\047\000\000\000\
+\\001\000\002\000\024\000\000\000\
+\\001\000\002\000\025\000\000\000\
+\\001\000\002\000\026\000\000\000\
+\\001\000\002\000\040\000\012\000\039\000\028\000\038\000\000\000\
+\\001\000\002\000\042\000\000\000\
+\\001\000\002\000\045\000\000\000\
 \\001\000\002\000\052\000\000\000\
-\\001\000\002\000\054\000\000\000\
-\\001\000\006\000\028\000\027\000\027\000\000\000\
-\\001\000\006\000\046\000\000\000\
-\\001\000\006\000\051\000\019\000\050\000\000\000\
-\\001\000\008\000\029\000\000\000\
-\\001\000\009\000\045\000\000\000\
-\\001\000\013\000\048\000\000\000\
-\\001\000\019\000\026\000\000\000\
-\\001\000\019\000\056\000\000\000\
-\\001\000\027\000\044\000\000\000\
-\\001\000\037\000\019\000\000\000\
-\\001\000\038\000\030\000\000\000\
-\\001\000\039\000\042\000\000\000\
-\\060\000\000\000\
-\\061\000\000\000\
-\\062\000\000\000\
-\\063\000\000\000\
-\\064\000\000\000\
+\\001\000\002\000\057\000\000\000\
+\\001\000\002\000\059\000\000\000\
+\\001\000\006\000\033\000\027\000\032\000\000\000\
+\\001\000\006\000\051\000\000\000\
+\\001\000\006\000\056\000\019\000\055\000\000\000\
+\\001\000\008\000\034\000\000\000\
+\\001\000\009\000\050\000\000\000\
+\\001\000\011\000\027\000\000\000\
+\\001\000\013\000\053\000\000\000\
+\\001\000\019\000\031\000\000\000\
+\\001\000\019\000\061\000\000\000\
+\\001\000\027\000\049\000\000\000\
+\\001\000\037\000\023\000\000\000\
+\\001\000\038\000\035\000\000\000\
+\\001\000\039\000\047\000\000\000\
 \\065\000\000\000\
 \\066\000\000\000\
-\\067\000\002\000\009\000\003\000\008\000\036\000\007\000\000\000\
-\\068\000\007\000\031\000\000\000\
+\\067\000\010\000\011\000\014\000\010\000\000\000\
+\\068\000\000\000\
 \\069\000\000\000\
 \\070\000\000\000\
-\\071\000\042\000\017\000\043\000\016\000\044\000\015\000\000\000\
+\\071\000\000\000\
 \\072\000\000\000\
 \\073\000\000\000\
-\\074\000\000\000\
-\\075\000\000\000\
+\\074\000\002\000\009\000\003\000\008\000\036\000\007\000\000\000\
+\\075\000\007\000\036\000\000\000\
 \\076\000\000\000\
 \\077\000\000\000\
-\\078\000\000\000\
+\\078\000\042\000\019\000\043\000\018\000\044\000\017\000\000\000\
 \\079\000\000\000\
 \\080\000\000\000\
 \\081\000\000\000\
-\\082\000\002\000\040\000\000\000\
+\\082\000\000\000\
 \\083\000\000\000\
-\\084\000\005\000\055\000\000\000\
+\\084\000\000\000\
 \\085\000\000\000\
 \\086\000\000\000\
 \\087\000\000\000\
+\\088\000\000\000\
+\\089\000\002\000\045\000\000\000\
+\\090\000\000\000\
+\\091\000\005\000\060\000\000\000\
+\\092\000\000\000\
+\\093\000\000\000\
+\\094\000\000\000\
 \"
 val actionRowNumbers =
-"\001\000\024\000\026\000\025\000\
-\\023\000\034\000\028\000\027\000\
-\\038\000\037\000\036\000\034\000\
-\\020\000\002\000\003\000\004\000\
-\\035\000\030\000\017\000\011\000\
-\\014\000\021\000\031\000\032\000\
-\\005\000\001\000\006\000\045\000\
-\\029\000\001\000\041\000\022\000\
-\\045\000\042\000\040\000\019\000\
-\\015\000\046\000\012\000\033\000\
-\\008\000\016\000\001\000\013\000\
-\\009\000\044\000\043\000\039\000\
-\\001\000\010\000\047\000\049\000\
-\\018\000\007\000\001\000\048\000\
-\\050\000\000\000"
+"\001\000\026\000\028\000\027\000\
+\\025\000\038\000\032\000\029\000\
+\\002\000\001\000\042\000\041\000\
+\\040\000\038\000\022\000\003\000\
+\\004\000\005\000\030\000\017\000\
+\\039\000\034\000\019\000\012\000\
+\\015\000\031\000\023\000\035\000\
+\\036\000\006\000\001\000\007\000\
+\\049\000\033\000\001\000\045\000\
+\\024\000\049\000\046\000\044\000\
+\\021\000\016\000\050\000\013\000\
+\\037\000\009\000\018\000\001\000\
+\\014\000\010\000\048\000\047\000\
+\\043\000\001\000\011\000\051\000\
+\\053\000\020\000\008\000\001\000\
+\\052\000\054\000\000\000"
 val gotoT =
 "\
-\\001\000\004\000\002\000\057\000\003\000\003\000\004\000\002\000\
+\\001\000\004\000\002\000\062\000\003\000\003\000\004\000\002\000\
 \\005\000\001\000\000\000\
 \\000\000\
 \\000\000\
 \\000\000\
 \\000\000\
-\\008\000\012\000\009\000\011\000\010\000\010\000\011\000\009\000\
-\\015\000\008\000\000\000\
+\\008\000\014\000\009\000\013\000\010\000\012\000\011\000\011\000\
+\\015\000\010\000\000\000\
 \\000\000\
 \\000\000\
 \\000\000\
-\\000\000\
-\\000\000\
-\\008\000\016\000\009\000\011\000\010\000\010\000\011\000\009\000\
-\\015\000\008\000\000\000\
+\\001\000\019\000\003\000\003\000\004\000\002\000\005\000\001\000\000\000\
 \\000\000\
 \\000\000\
 \\000\000\
+\\008\000\020\000\009\000\013\000\010\000\012\000\011\000\011\000\
+\\015\000\010\000\000\000\
 \\000\000\
-\\000\000\
-\\001\000\023\000\003\000\003\000\004\000\002\000\005\000\001\000\
-\\006\000\022\000\007\000\021\000\000\000\
 \\000\000\
 \\000\000\
 \\000\000\
 \\000\000\
 \\000\000\
 \\000\000\
-\\012\000\030\000\000\000\
-\\001\000\034\000\003\000\003\000\004\000\002\000\005\000\001\000\000\000\
+\\001\000\028\000\003\000\003\000\004\000\002\000\005\000\001\000\
+\\006\000\027\000\007\000\026\000\000\000\
 \\000\000\
-\\013\000\037\000\014\000\036\000\000\000\
 \\000\000\
+\\000\000\
+\\000\000\
+\\000\000\
+\\000\000\
+\\000\000\
+\\012\000\035\000\000\000\
 \\001\000\039\000\003\000\003\000\004\000\002\000\005\000\001\000\000\000\
 \\000\000\
+\\013\000\042\000\014\000\041\000\000\000\
 \\000\000\
-\\013\000\037\000\014\000\041\000\000\000\
-\\000\000\
-\\000\000\
-\\000\000\
+\\001\000\044\000\003\000\003\000\004\000\002\000\005\000\001\000\000\000\
 \\000\000\
 \\000\000\
-\\000\000\
-\\000\000\
-\\000\000\
-\\000\000\
-\\001\000\047\000\003\000\003\000\004\000\002\000\005\000\001\000\000\000\
+\\013\000\042\000\014\000\046\000\000\000\
 \\000\000\
 \\000\000\
 \\000\000\
 \\000\000\
 \\000\000\
-\\001\000\051\000\003\000\003\000\004\000\002\000\005\000\001\000\000\000\
 \\000\000\
 \\000\000\
 \\000\000\
 \\000\000\
-\\013\000\055\000\000\000\
+\\001\000\052\000\003\000\003\000\004\000\002\000\005\000\001\000\000\000\
+\\000\000\
+\\000\000\
+\\000\000\
+\\000\000\
+\\000\000\
 \\001\000\056\000\003\000\003\000\004\000\002\000\005\000\001\000\000\000\
 \\000\000\
 \\000\000\
 \\000\000\
+\\000\000\
+\\013\000\060\000\000\000\
+\\001\000\061\000\003\000\003\000\004\000\002\000\005\000\001\000\000\000\
+\\000\000\
+\\000\000\
+\\000\000\
 \"
-val numstates = 58
-val numrules = 28
+val numstates = 63
+val numrules = 30
 val s = ref "" and index = ref 0
 val string_to_int = fn () => 
 let val i = !index
@@ -344,14 +354,31 @@ end
 end; ()))
  in ( LrTable.NT 2, ( result, ID1left, ID1right), rest671)
 end
-|  ( 5, ( ( _, ( MlyValue.INT INT1, INT1left, INT1right)) :: rest671))
+|  ( 5, ( ( _, ( MlyValue.ID ID1, _, ID1right)) :: _ :: ( _, ( 
+MlyValue.ntVOID lvalue1, lvalue1left, _)) :: rest671)) => let val  
+result = MlyValue.ntVOID (fn _ => ( let val  lvalue1 = lvalue1 ()
+ val  ID1 = ID1 ()
+ in ()
+end; ()))
+ in ( LrTable.NT 2, ( result, lvalue1left, ID1right), rest671)
+end
+|  ( 6, ( ( _, ( _, _, RBRACK1right)) :: ( _, ( MlyValue.ntVOID exp1,
+ _, _)) :: _ :: ( _, ( MlyValue.ntVOID lvalue1, lvalue1left, _)) :: 
+rest671)) => let val  result = MlyValue.ntVOID (fn _ => ( let val  
+lvalue1 = lvalue1 ()
+ val  exp1 = exp1 ()
+ in ()
+end; ()))
+ in ( LrTable.NT 2, ( result, lvalue1left, RBRACK1right), rest671)
+end
+|  ( 7, ( ( _, ( MlyValue.INT INT1, INT1left, INT1right)) :: rest671))
  => let val  result = MlyValue.ntVOID (fn _ => ( let val  INT1 = INT1
  ()
  in ()
 end; ()))
  in ( LrTable.NT 3, ( result, INT1left, INT1right), rest671)
 end
-|  ( 6, ( ( _, ( _, _, END1right)) :: ( _, ( MlyValue.ntVOID expseq1,
+|  ( 8, ( ( _, ( _, _, END1right)) :: ( _, ( MlyValue.ntVOID expseq1,
  _, _)) :: _ :: ( _, ( MlyValue.ntVOID decs1, _, _)) :: ( _, ( _, 
 LET1left, _)) :: rest671)) => let val  result = MlyValue.ntVOID (fn _
  => ( let val  decs1 = decs1 ()
@@ -360,10 +387,10 @@ LET1left, _)) :: rest671)) => let val  result = MlyValue.ntVOID (fn _
 end; ()))
  in ( LrTable.NT 4, ( result, LET1left, END1right), rest671)
 end
-|  ( 7, ( rest671)) => let val  result = MlyValue.ntVOID (fn _ => ())
+|  ( 9, ( rest671)) => let val  result = MlyValue.ntVOID (fn _ => ())
  in ( LrTable.NT 6, ( result, defaultPos, defaultPos), rest671)
 end
-|  ( 8, ( ( _, ( MlyValue.ntVOID nonempty_expseq1, 
+|  ( 10, ( ( _, ( MlyValue.ntVOID nonempty_expseq1, 
 nonempty_expseq1left, nonempty_expseq1right)) :: rest671)) => let val 
  result = MlyValue.ntVOID (fn _ => ( let val  nonempty_expseq1 = 
 nonempty_expseq1 ()
@@ -372,14 +399,14 @@ end; ()))
  in ( LrTable.NT 6, ( result, nonempty_expseq1left, 
 nonempty_expseq1right), rest671)
 end
-|  ( 9, ( ( _, ( MlyValue.ntVOID exp1, exp1left, exp1right)) :: 
+|  ( 11, ( ( _, ( MlyValue.ntVOID exp1, exp1left, exp1right)) :: 
 rest671)) => let val  result = MlyValue.ntVOID (fn _ => ( let val  
 exp1 = exp1 ()
  in ()
 end; ()))
  in ( LrTable.NT 5, ( result, exp1left, exp1right), rest671)
 end
-|  ( 10, ( ( _, ( MlyValue.ntVOID exp1, _, exp1right)) :: _ :: ( _, ( 
+|  ( 12, ( ( _, ( MlyValue.ntVOID exp1, _, exp1right)) :: _ :: ( _, ( 
 MlyValue.ntVOID nonempty_expseq1, nonempty_expseq1left, _)) :: rest671
 )) => let val  result = MlyValue.ntVOID (fn _ => ( let val  
 nonempty_expseq1 = nonempty_expseq1 ()
@@ -389,10 +416,10 @@ end; ()))
  in ( LrTable.NT 5, ( result, nonempty_expseq1left, exp1right), 
 rest671)
 end
-|  ( 11, ( rest671)) => let val  result = MlyValue.ntVOID (fn _ => ())
+|  ( 13, ( rest671)) => let val  result = MlyValue.ntVOID (fn _ => ())
  in ( LrTable.NT 7, ( result, defaultPos, defaultPos), rest671)
 end
-|  ( 12, ( ( _, ( MlyValue.ntVOID decs1, _, decs1right)) :: ( _, ( 
+|  ( 14, ( ( _, ( MlyValue.ntVOID decs1, _, decs1right)) :: ( _, ( 
 MlyValue.ntVOID dec1, dec1left, _)) :: rest671)) => let val  result = 
 MlyValue.ntVOID (fn _ => ( let val  dec1 = dec1 ()
  val  decs1 = decs1 ()
@@ -400,28 +427,28 @@ MlyValue.ntVOID (fn _ => ( let val  dec1 = dec1 ()
 end; ()))
  in ( LrTable.NT 7, ( result, dec1left, decs1right), rest671)
 end
-|  ( 13, ( ( _, ( MlyValue.ntVOID vardec1, vardec1left, vardec1right))
+|  ( 15, ( ( _, ( MlyValue.ntVOID vardec1, vardec1left, vardec1right))
  :: rest671)) => let val  result = MlyValue.ntVOID (fn _ => ( let val 
  vardec1 = vardec1 ()
  in ()
 end; ()))
  in ( LrTable.NT 8, ( result, vardec1left, vardec1right), rest671)
 end
-|  ( 14, ( ( _, ( MlyValue.ntVOID tydec1, tydec1left, tydec1right)) ::
+|  ( 16, ( ( _, ( MlyValue.ntVOID tydec1, tydec1left, tydec1right)) ::
  rest671)) => let val  result = MlyValue.ntVOID (fn _ => ( let val  
 tydec1 = tydec1 ()
  in ()
 end; ()))
  in ( LrTable.NT 8, ( result, tydec1left, tydec1right), rest671)
 end
-|  ( 15, ( ( _, ( MlyValue.ntVOID fundec1, fundec1left, fundec1right))
+|  ( 17, ( ( _, ( MlyValue.ntVOID fundec1, fundec1left, fundec1right))
  :: rest671)) => let val  result = MlyValue.ntVOID (fn _ => ( let val 
  fundec1 = fundec1 ()
  in ()
 end; ()))
  in ( LrTable.NT 8, ( result, fundec1left, fundec1right), rest671)
 end
-|  ( 16, ( ( _, ( MlyValue.ntVOID exp1, _, exp1right)) :: _ :: ( _, ( 
+|  ( 18, ( ( _, ( MlyValue.ntVOID exp1, _, exp1right)) :: _ :: ( _, ( 
 MlyValue.ID ID2, _, _)) :: _ :: ( _, ( MlyValue.ID ID1, _, _)) :: ( _,
  ( _, VAR1left, _)) :: rest671)) => let val  result = MlyValue.ntVOID
  (fn _ => ( let val  ID1 = ID1 ()
@@ -431,7 +458,7 @@ MlyValue.ID ID2, _, _)) :: _ :: ( _, ( MlyValue.ID ID1, _, _)) :: ( _,
 end; ()))
  in ( LrTable.NT 9, ( result, VAR1left, exp1right), rest671)
 end
-|  ( 17, ( ( _, ( MlyValue.ntVOID exp1, _, exp1right)) :: _ :: ( _, ( 
+|  ( 19, ( ( _, ( MlyValue.ntVOID exp1, _, exp1right)) :: _ :: ( _, ( 
 MlyValue.ID ID1, _, _)) :: ( _, ( _, VAR1left, _)) :: rest671)) => let
  val  result = MlyValue.ntVOID (fn _ => ( let val  ID1 = ID1 ()
  val  exp1 = exp1 ()
@@ -439,7 +466,7 @@ MlyValue.ID ID1, _, _)) :: ( _, ( _, VAR1left, _)) :: rest671)) => let
 end; ()))
  in ( LrTable.NT 9, ( result, VAR1left, exp1right), rest671)
 end
-|  ( 18, ( ( _, ( MlyValue.ntVOID ty1, _, ty1right)) :: _ :: ( _, ( 
+|  ( 20, ( ( _, ( MlyValue.ntVOID ty1, _, ty1right)) :: _ :: ( _, ( 
 MlyValue.ID ID1, _, _)) :: ( _, ( _, TYPE1left, _)) :: rest671)) =>
  let val  result = MlyValue.ntVOID (fn _ => ( let val  ID1 = ID1 ()
  val  ty1 = ty1 ()
@@ -447,13 +474,13 @@ MlyValue.ID ID1, _, _)) :: ( _, ( _, TYPE1left, _)) :: rest671)) =>
 end; ()))
  in ( LrTable.NT 10, ( result, TYPE1left, ty1right), rest671)
 end
-|  ( 19, ( ( _, ( MlyValue.ID ID1, ID1left, ID1right)) :: rest671)) =>
+|  ( 21, ( ( _, ( MlyValue.ID ID1, ID1left, ID1right)) :: rest671)) =>
  let val  result = MlyValue.ntVOID (fn _ => ( let val  ID1 = ID1 ()
  in ()
 end; ()))
  in ( LrTable.NT 11, ( result, ID1left, ID1right), rest671)
 end
-|  ( 20, ( ( _, ( _, _, RBRACE1right)) :: ( _, ( MlyValue.ntVOID 
+|  ( 22, ( ( _, ( _, _, RBRACE1right)) :: ( _, ( MlyValue.ntVOID 
 tyfields1, _, _)) :: ( _, ( _, LBRACE1left, _)) :: rest671)) => let
  val  result = MlyValue.ntVOID (fn _ => ( let val  tyfields1 = 
 tyfields1 ()
@@ -462,17 +489,17 @@ end; ()))
  in ( LrTable.NT 11, ( result, LBRACE1left, RBRACE1right), rest671)
 
 end
-|  ( 21, ( ( _, ( MlyValue.ID ID1, _, ID1right)) :: _ :: ( _, ( _, 
+|  ( 23, ( ( _, ( MlyValue.ID ID1, _, ID1right)) :: _ :: ( _, ( _, 
 ARRAY1left, _)) :: rest671)) => let val  result = MlyValue.ntVOID (fn
  _ => ( let val  ID1 = ID1 ()
  in ()
 end; ()))
  in ( LrTable.NT 11, ( result, ARRAY1left, ID1right), rest671)
 end
-|  ( 22, ( rest671)) => let val  result = MlyValue.ntVOID (fn _ => ())
+|  ( 24, ( rest671)) => let val  result = MlyValue.ntVOID (fn _ => ())
  in ( LrTable.NT 13, ( result, defaultPos, defaultPos), rest671)
 end
-|  ( 23, ( ( _, ( MlyValue.ntVOID nonempty_tyfields1, 
+|  ( 25, ( ( _, ( MlyValue.ntVOID nonempty_tyfields1, 
 nonempty_tyfields1left, nonempty_tyfields1right)) :: rest671)) => let
  val  result = MlyValue.ntVOID (fn _ => ( let val  nonempty_tyfields1
  = nonempty_tyfields1 ()
@@ -481,7 +508,7 @@ end; ()))
  in ( LrTable.NT 13, ( result, nonempty_tyfields1left, 
 nonempty_tyfields1right), rest671)
 end
-|  ( 24, ( ( _, ( MlyValue.ID ID2, _, ID2right)) :: _ :: ( _, ( 
+|  ( 26, ( ( _, ( MlyValue.ID ID2, _, ID2right)) :: _ :: ( _, ( 
 MlyValue.ID ID1, ID1left, _)) :: rest671)) => let val  result = 
 MlyValue.ntVOID (fn _ => ( let val  ID1 = ID1 ()
  val  ID2 = ID2 ()
@@ -489,7 +516,7 @@ MlyValue.ntVOID (fn _ => ( let val  ID1 = ID1 ()
 end; ()))
  in ( LrTable.NT 12, ( result, ID1left, ID2right), rest671)
 end
-|  ( 25, ( ( _, ( MlyValue.ntVOID nonempty_tyfields1, _, 
+|  ( 27, ( ( _, ( MlyValue.ntVOID nonempty_tyfields1, _, 
 nonempty_tyfields1right)) :: _ :: ( _, ( MlyValue.ID ID2, _, _)) :: _
  :: ( _, ( MlyValue.ID ID1, ID1left, _)) :: rest671)) => let val  
 result = MlyValue.ntVOID (fn _ => ( let val  ID1 = ID1 ()
@@ -500,7 +527,7 @@ end; ()))
  in ( LrTable.NT 12, ( result, ID1left, nonempty_tyfields1right), 
 rest671)
 end
-|  ( 26, ( ( _, ( MlyValue.ntVOID exp1, _, exp1right)) :: _ :: _ :: (
+|  ( 28, ( ( _, ( MlyValue.ntVOID exp1, _, exp1right)) :: _ :: _ :: (
  _, ( MlyValue.ntVOID tyfields1, _, _)) :: _ :: ( _, ( MlyValue.ID ID1
 , _, _)) :: ( _, ( _, FUNCTION1left, _)) :: rest671)) => let val  
 result = MlyValue.ntVOID (fn _ => ( let val  ID1 = ID1 ()
@@ -510,7 +537,7 @@ result = MlyValue.ntVOID (fn _ => ( let val  ID1 = ID1 ()
 end; ()))
  in ( LrTable.NT 14, ( result, FUNCTION1left, exp1right), rest671)
 end
-|  ( 27, ( ( _, ( MlyValue.ntVOID exp1, _, exp1right)) :: _ :: ( _, ( 
+|  ( 29, ( ( _, ( MlyValue.ntVOID exp1, _, exp1right)) :: _ :: ( _, ( 
 MlyValue.ID ID2, _, _)) :: _ :: _ :: ( _, ( MlyValue.ntVOID tyfields1,
  _, _)) :: _ :: ( _, ( MlyValue.ID ID1, _, _)) :: ( _, ( _, 
 FUNCTION1left, _)) :: rest671)) => let val  result = MlyValue.ntVOID
