@@ -1,3 +1,13 @@
+8 rules not reduced
+
+warning: rule <tydec : TYPE ID EQ ty > will never be reduced
+warning: rule <ty : ID > will never be reduced
+warning: rule <ty : LBRACE tyfields RBRACE > will never be reduced
+warning: rule <ty : ARRAY OF ID > will never be reduced
+warning: rule <tyfields : > will never be reduced
+warning: rule <tyfields : nonempty_tyfields > will never be reduced
+warning: rule <nonempty_tyfields : ID COLON ID > will never be reduced
+warning: rule <nonempty_tyfields : ID COLON ID COMMA nonempty_tyfields > will never be reduced
 
 state 0:
 

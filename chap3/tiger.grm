@@ -11,7 +11,9 @@
   | BREAK | NIL
   | FUNCTION | VAR | TYPE 
 
-%nonterm  exp | program | lvalue | rvalue | letexp | nonempty_expseq | expseq | decs | dec | vardec
+%nonterm  exp | program | lvalue | rvalue 
+          | letexp | nonempty_expseq | expseq
+          | decs | dec | vardec | tydec | ty | nonempty_tyfields | tyfields
 
 %pos int
 %verbose
@@ -45,9 +47,7 @@ rvalue: INT ()
 
 letexp: LET decs IN expseq END ()
 
-expseq: ()
-      | nonempty_expseq ()
-
+expseq: () | nonempty_expseq ()
 nonempty_expseq: exp ()
                | nonempty_expseq SEMICOLON exp ()
 
@@ -58,3 +58,11 @@ dec: vardec ()
 
 vardec: VAR ID COLON ID ASSIGN exp ()
       | VAR ID ASSIGN exp ()
+
+tydec: TYPE ID EQ ty ()
+
+ty: ID () | LBRACE tyfields RBRACE () | ARRAY OF ID ()
+
+tyfields: () | nonempty_tyfields ()
+nonempty_tyfields: ID COLON ID ()
+                 | ID COLON ID COMMA nonempty_tyfields ()
