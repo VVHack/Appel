@@ -36,6 +36,7 @@ program	: exp				()
 
 	
 exp: letexp 			() 
+   | ID           ()
    | INT          ()
 
 letexp: LET decs IN expseq END ()

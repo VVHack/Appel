@@ -1,2 +1,7 @@
-let var a: int := 5 in
+let 
+  var a: int := 5 
+  var b := 5 
+in
+  let var c := a in
+  end
 end
