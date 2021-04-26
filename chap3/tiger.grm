@@ -11,7 +11,7 @@
   | BREAK | NIL
   | FUNCTION | VAR | TYPE 
 
-%nonterm  exp | program | letexp | nonempty_expseq | expseq | decs | dec | vardec
+%nonterm  exp | program | lvalue | rvalue | letexp | nonempty_expseq | expseq | decs | dec | vardec
 
 %pos int
 %verbose
@@ -36,8 +36,12 @@ program	: exp				()
 
 	
 exp: letexp 			() 
-   | ID           ()
-   | INT          ()
+   | lvalue       ()
+   | rvalue       ()
+
+lvalue: ID ()
+
+rvalue: INT ()
 
 letexp: LET decs IN expseq END ()
 

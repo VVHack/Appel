@@ -3,12 +3,14 @@ state 0:
 
 	program : . exp 
 
-	ID	shift 5
-	INT	shift 4
-	LET	shift 3
+	ID	shift 7
+	INT	shift 6
+	LET	shift 5
 
-	exp	goto 2
-	program	goto 25
+	exp	goto 4
+	program	goto 27
+	lvalue	goto 3
+	rvalue	goto 2
 	letexp	goto 1
 
 	.	error
@@ -25,6 +27,24 @@ state 1:
 
 state 2:
 
+	exp : rvalue .  (reduce by rule 3)
+
+
+
+	.	reduce by rule 3
+
+
+state 3:
+
+	exp : lvalue .  (reduce by rule 2)
+
+
+
+	.	reduce by rule 2
+
+
+state 4:
+
 	program : exp .  (reduce by rule 0)
 
 
@@ -32,246 +52,254 @@ state 2:
 	.	reduce by rule 0
 
 
-state 3:
+state 5:
 
 	letexp : LET . decs IN expseq END 
 
-	VAR	shift 9
+	VAR	shift 11
 
-	decs	goto 8
-	dec	goto 7
-	vardec	goto 6
-
-	.	reduce by rule 9
-
-
-state 4:
-
-	exp : INT .  (reduce by rule 3)
-
-
-
-	.	reduce by rule 3
-
-
-state 5:
-
-	exp : ID .  (reduce by rule 2)
-
-
-
-	.	reduce by rule 2
-
-
-state 6:
-
-	dec : vardec .  (reduce by rule 11)
-
-
+	decs	goto 10
+	dec	goto 9
+	vardec	goto 8
 
 	.	reduce by rule 11
 
 
-state 7:
+state 6:
 
-	decs : dec . decs 
-
-	VAR	shift 9
-
-	decs	goto 10
-	dec	goto 7
-	vardec	goto 6
-
-	.	reduce by rule 9
+	rvalue : INT .  (reduce by rule 5)
 
 
-state 8:
-
-	letexp : LET decs . IN expseq END 
-
-	IN	shift 11
-
-
-	.	error
-
-
-state 9:
-
-	vardec : VAR . ID COLON ID ASSIGN exp 
-	vardec : VAR . ID ASSIGN exp 
-
-	ID	shift 12
-
-
-	.	error
-
-
-state 10:
-
-	decs : dec decs .  (reduce by rule 10)
-
-
-
-	.	reduce by rule 10
-
-
-state 11:
-
-	letexp : LET decs IN . expseq END 
-
-	ID	shift 5
-	INT	shift 4
-	LET	shift 3
-
-	exp	goto 15
-	letexp	goto 1
-	nonempty_expseq	goto 14
-	expseq	goto 13
 
 	.	reduce by rule 5
 
 
-state 12:
+state 7:
 
-	vardec : VAR ID . COLON ID ASSIGN exp 
-	vardec : VAR ID . ASSIGN exp 
-
-	COLON	shift 17
-	ASSIGN	shift 16
-
-
-	.	error
-
-
-state 13:
-
-	letexp : LET decs IN expseq . END 
-
-	END	shift 18
-
-
-	.	error
-
-
-state 14:
-
-	nonempty_expseq : nonempty_expseq . SEMICOLON exp 
-	expseq : nonempty_expseq .  (reduce by rule 6)
-
-	SEMICOLON	shift 19
-
-
-	.	reduce by rule 6
-
-
-state 15:
-
-	nonempty_expseq : exp .  (reduce by rule 7)
-
-
-
-	.	reduce by rule 7
-
-
-state 16:
-
-	vardec : VAR ID ASSIGN . exp 
-
-	ID	shift 5
-	INT	shift 4
-	LET	shift 3
-
-	exp	goto 20
-	letexp	goto 1
-
-	.	error
-
-
-state 17:
-
-	vardec : VAR ID COLON . ID ASSIGN exp 
-
-	ID	shift 21
-
-
-	.	error
-
-
-state 18:
-
-	letexp : LET decs IN expseq END .  (reduce by rule 4)
+	lvalue : ID .  (reduce by rule 4)
 
 
 
 	.	reduce by rule 4
 
 
-state 19:
+state 8:
 
-	nonempty_expseq : nonempty_expseq SEMICOLON . exp 
-
-	ID	shift 5
-	INT	shift 4
-	LET	shift 3
-
-	exp	goto 22
-	letexp	goto 1
-
-	.	error
-
-
-state 20:
-
-	vardec : VAR ID ASSIGN exp .  (reduce by rule 13)
+	dec : vardec .  (reduce by rule 13)
 
 
 
 	.	reduce by rule 13
 
 
-state 21:
+state 9:
 
-	vardec : VAR ID COLON ID . ASSIGN exp 
+	decs : dec . decs 
 
-	ASSIGN	shift 23
+	VAR	shift 11
+
+	decs	goto 12
+	dec	goto 9
+	vardec	goto 8
+
+	.	reduce by rule 11
+
+
+state 10:
+
+	letexp : LET decs . IN expseq END 
+
+	IN	shift 13
 
 
 	.	error
 
 
-state 22:
+state 11:
 
-	nonempty_expseq : nonempty_expseq SEMICOLON exp .  (reduce by rule 8)
+	vardec : VAR . ID COLON ID ASSIGN exp 
+	vardec : VAR . ID ASSIGN exp 
 
+	ID	shift 14
 
-
-	.	reduce by rule 8
-
-
-state 23:
-
-	vardec : VAR ID COLON ID ASSIGN . exp 
-
-	ID	shift 5
-	INT	shift 4
-	LET	shift 3
-
-	exp	goto 24
-	letexp	goto 1
 
 	.	error
 
 
-state 24:
+state 12:
 
-	vardec : VAR ID COLON ID ASSIGN exp .  (reduce by rule 12)
+	decs : dec decs .  (reduce by rule 12)
 
 
 
 	.	reduce by rule 12
 
 
+state 13:
+
+	letexp : LET decs IN . expseq END 
+
+	ID	shift 7
+	INT	shift 6
+	LET	shift 5
+
+	exp	goto 17
+	lvalue	goto 3
+	rvalue	goto 2
+	letexp	goto 1
+	nonempty_expseq	goto 16
+	expseq	goto 15
+
+	.	reduce by rule 7
+
+
+state 14:
+
+	vardec : VAR ID . COLON ID ASSIGN exp 
+	vardec : VAR ID . ASSIGN exp 
+
+	COLON	shift 19
+	ASSIGN	shift 18
+
+
+	.	error
+
+
+state 15:
+
+	letexp : LET decs IN expseq . END 
+
+	END	shift 20
+
+
+	.	error
+
+
+state 16:
+
+	nonempty_expseq : nonempty_expseq . SEMICOLON exp 
+	expseq : nonempty_expseq .  (reduce by rule 8)
+
+	SEMICOLON	shift 21
+
+
+	.	reduce by rule 8
+
+
+state 17:
+
+	nonempty_expseq : exp .  (reduce by rule 9)
+
+
+
+	.	reduce by rule 9
+
+
+state 18:
+
+	vardec : VAR ID ASSIGN . exp 
+
+	ID	shift 7
+	INT	shift 6
+	LET	shift 5
+
+	exp	goto 22
+	lvalue	goto 3
+	rvalue	goto 2
+	letexp	goto 1
+
+	.	error
+
+
+state 19:
+
+	vardec : VAR ID COLON . ID ASSIGN exp 
+
+	ID	shift 23
+
+
+	.	error
+
+
+state 20:
+
+	letexp : LET decs IN expseq END .  (reduce by rule 6)
+
+
+
+	.	reduce by rule 6
+
+
+state 21:
+
+	nonempty_expseq : nonempty_expseq SEMICOLON . exp 
+
+	ID	shift 7
+	INT	shift 6
+	LET	shift 5
+
+	exp	goto 24
+	lvalue	goto 3
+	rvalue	goto 2
+	letexp	goto 1
+
+	.	error
+
+
+state 22:
+
+	vardec : VAR ID ASSIGN exp .  (reduce by rule 15)
+
+
+
+	.	reduce by rule 15
+
+
+state 23:
+
+	vardec : VAR ID COLON ID . ASSIGN exp 
+
+	ASSIGN	shift 25
+
+
+	.	error
+
+
+state 24:
+
+	nonempty_expseq : nonempty_expseq SEMICOLON exp .  (reduce by rule 10)
+
+
+
+	.	reduce by rule 10
+
+
 state 25:
+
+	vardec : VAR ID COLON ID ASSIGN . exp 
+
+	ID	shift 7
+	INT	shift 6
+	LET	shift 5
+
+	exp	goto 26
+	lvalue	goto 3
+	rvalue	goto 2
+	letexp	goto 1
+
+	.	error
+
+
+state 26:
+
+	vardec : VAR ID COLON ID ASSIGN exp .  (reduce by rule 14)
+
+
+
+	.	reduce by rule 14
+
+
+state 27:
 
 
 	EOF	accept
@@ -279,5 +307,5 @@ state 25:
 
 	.	error
 
-16 of 52 action table entries left after compaction
-19 goto table entries
+16 of 54 action table entries left after compaction
+29 goto table entries
