@@ -35,7 +35,7 @@
 program	: exp				()
 
 	
-exp: vardec 			() 
+exp: letexp 			() 
    | INT          ()
 
 letexp: LET decs IN expseq END ()
