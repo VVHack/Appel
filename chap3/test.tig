@@ -2,6 +2,6 @@ let
   var a: int := 5 
   var b := 5 
 in
-  let var c := b + -a in
+  let var c := b + -a[0] in
   end
 end

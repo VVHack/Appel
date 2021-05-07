@@ -16,6 +16,7 @@
           | decs | dec | vardec | tydec | ty | nonempty_tyfields | tyfields | fundec
           | arithmetic
           | function_call | parameters | nonempty_parameters
+          | array_creation
 
 %pos int
 %verbose
@@ -34,9 +35,12 @@
 %value INT (1)
 %value STRING ("")
 
+%nonassoc OF
 %left PLUS MINUS
 %left TIMES DIVIDE
 %left UMINUS
+%nonassoc LPAREN
+%nonassoc LBRACK
 
 %%
 
@@ -50,13 +54,8 @@ exp: letexp 			()
    | LPAREN expseq RPAREN ()
    | lvalue       ()
    | rvalue       ()
+   | array_creation       ()
    | NIL          ()
-
-lvalue: ID ()
-      | lvalue DOT ID ()
-      | lvalue LBRACK exp RBRACK ()
-
-rvalue: INT () | STRING ()
 
 letexp: LET decs IN expseq END ()
 
@@ -93,3 +92,11 @@ function_call: ID LPAREN parameters RPAREN ()
 parameters: () | nonempty_parameters ()
 nonempty_parameters: exp ()
                    | nonempty_parameters COMMA exp ()
+
+array_creation: ID LBRACK exp RBRACK OF exp ()
+
+lvalue: ID ()
+      | lvalue DOT ID ()
+      | lvalue LBRACK exp RBRACK ()
+
+rvalue: INT () | STRING ()
