@@ -1,0 +1,8 @@
+let 
+  var a: int := 5 
+  var b := 5 
+in
+  let var c := b + -a[0] type arr_type = array of int 
+  var arr := arr_type [1+2+4] of 0 in
+  end
+end
