@@ -23,6 +23,9 @@
           | if_then_else
           | while_loop
           | for_loop
+          | break_exp
+          | comparison
+          | boolean_operation
 
 %pos int
 %verbose
@@ -45,6 +48,8 @@
 %nonassoc WHILE FOR TO DO
 %nonassoc IF THEN
 %nonassoc ELSE
+%left AND OR
+%nonassoc EQ NEQ LT GT LE GE
 %left PLUS MINUS
 %left TIMES DIVIDE
 %left UMINUS
@@ -69,6 +74,9 @@ exp: letexp 			()
    | if_then_else ()
    | while_loop ()
    | for_loop ()
+   | break_exp ()
+   | comparison ()
+   | boolean_operation ()
 
 letexp: LET decs IN expseq END ()
 
@@ -127,3 +135,15 @@ if_then_else: IF exp THEN exp ()
 while_loop: WHILE exp DO exp ()
 
 for_loop: FOR ID ASSIGN exp TO exp DO exp ()
+
+break_exp: BREAK ()
+
+comparison: exp EQ exp ()
+          | exp NEQ exp ()
+          | exp LT exp ()
+          | exp GT exp ()
+          | exp LE exp ()
+          | exp GE exp ()
+
+boolean_operation: exp AND exp ()
+                 | exp OR exp ()
