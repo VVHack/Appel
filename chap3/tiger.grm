@@ -11,12 +11,14 @@
   | BREAK | NIL
   | FUNCTION | VAR | TYPE 
 
-%nonterm  exp | program | lvalue | rvalue
+%nonterm  exp | program | rvalue
           | letexp | nonempty_expseq | expseq
           | decs | dec | vardec | tydec | ty | nonempty_tyfields | tyfields | fundec
           | arithmetic
           | function_call | parameters | nonempty_parameters
+          | id_subscript
           | array_creation
+          | lvalue | lvalue_complex
 
 %pos int
 %verbose
@@ -93,10 +95,15 @@ parameters: () | nonempty_parameters ()
 nonempty_parameters: exp ()
                    | nonempty_parameters COMMA exp ()
 
-array_creation: ID LBRACK exp RBRACK OF exp ()
+id_subscript: ID LBRACK exp RBRACK ()
+
+array_creation: id_subscript OF exp ()
+
+lvalue_complex: lvalue DOT ID () 
+              | lvalue_complex LBRACK exp RBRACK ()
 
 lvalue: ID ()
-      | lvalue DOT ID ()
-      | lvalue LBRACK exp RBRACK ()
+      | lvalue_complex ()
+      | id_subscript ()
 
 rvalue: INT () | STRING ()
