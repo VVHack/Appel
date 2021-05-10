@@ -21,6 +21,8 @@
           | lvalue | lvalue_complex
           | assignment
           | if_then_else
+          | while_loop
+          | for_loop
 
 %pos int
 %verbose
@@ -40,6 +42,7 @@
 %value STRING ("")
 
 %nonassoc OF ASSIGN
+%nonassoc WHILE FOR TO DO
 %nonassoc IF THEN
 %nonassoc ELSE
 %left PLUS MINUS
@@ -64,6 +67,8 @@ exp: letexp 			()
    | NIL          ()
    | assignment ()
    | if_then_else ()
+   | while_loop ()
+   | for_loop ()
 
 letexp: LET decs IN expseq END ()
 
@@ -118,3 +123,7 @@ rvalue: INT () | STRING ()
 
 if_then_else: IF exp THEN exp ()
             | IF exp THEN exp ELSE exp ()
+
+while_loop: WHILE exp DO exp ()
+
+for_loop: FOR ID ASSIGN exp TO exp DO exp ()
