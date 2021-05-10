@@ -19,6 +19,7 @@
           | id_subscript
           | array_creation
           | lvalue | lvalue_complex
+          | assignment
 
 %pos int
 %verbose
@@ -37,7 +38,7 @@
 %value INT (1)
 %value STRING ("")
 
-%nonassoc OF
+%nonassoc OF ASSIGN
 %left PLUS MINUS
 %left TIMES DIVIDE
 %left UMINUS
@@ -58,6 +59,7 @@ exp: letexp 			()
    | rvalue       ()
    | array_creation       ()
    | NIL          ()
+   | assignment ()
 
 letexp: LET decs IN expseq END ()
 
@@ -105,5 +107,7 @@ lvalue_complex: lvalue DOT ID ()
 lvalue: ID ()
       | lvalue_complex ()
       | id_subscript ()
+
+assignment: lvalue ASSIGN exp ()
 
 rvalue: INT () | STRING ()
