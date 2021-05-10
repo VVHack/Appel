@@ -20,6 +20,7 @@
           | array_creation
           | lvalue | lvalue_complex
           | assignment
+          | if_then_else
 
 %pos int
 %verbose
@@ -39,6 +40,8 @@
 %value STRING ("")
 
 %nonassoc OF ASSIGN
+%nonassoc IF THEN
+%nonassoc ELSE
 %left PLUS MINUS
 %left TIMES DIVIDE
 %left UMINUS
@@ -60,6 +63,7 @@ exp: letexp 			()
    | array_creation       ()
    | NIL          ()
    | assignment ()
+   | if_then_else ()
 
 letexp: LET decs IN expseq END ()
 
@@ -111,3 +115,6 @@ lvalue: ID ()
 assignment: lvalue ASSIGN exp ()
 
 rvalue: INT () | STRING ()
+
+if_then_else: IF exp THEN exp ()
+            | IF exp THEN exp ELSE exp ()
