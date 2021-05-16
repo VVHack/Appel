@@ -1,0 +1,10 @@
+let 
+  var a: int := 5 
+  var b := 5 
+in
+  let var c := b + -a[0] type arr_type = array of int 
+  type arr_arr_type = array of arr_type
+  var arr := arr_arr_type [1+2+4] of arr_type [3+2] of 0 in
+    arr[0][1]
+  end
+end
