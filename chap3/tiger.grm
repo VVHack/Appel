@@ -16,6 +16,7 @@
           | decs | dec | vardec | tydec | ty | nonempty_tyfields | tyfields | fundec
           | arithmetic
           | function_call | parameters | nonempty_parameters
+          | record_creation | tyinit | nonempty_tyinit
           | id_subscript
           | array_creation
           | lvalue | lvalue_complex
@@ -66,6 +67,7 @@ exp: letexp 			()
    | arithmetic ()
    | MINUS exp %prec UMINUS ()
    | LPAREN expseq RPAREN ()
+   | record_creation  ()
    | lvalue       ()
    | rvalue       ()
    | array_creation       ()
@@ -113,6 +115,11 @@ function_call: ID LPAREN parameters RPAREN ()
 parameters: () | nonempty_parameters ()
 nonempty_parameters: exp ()
                    | nonempty_parameters COMMA exp ()
+
+tyinit: () | nonempty_tyinit ()
+nonempty_tyinit: ID EQ exp ()
+               | nonempty_tyinit COMMA ID EQ exp ()
+record_creation: ID LBRACE tyinit RBRACE ()
 
 id_subscript: ID LBRACK exp RBRACK ()
 
