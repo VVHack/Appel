@@ -1,2 +1,2 @@
 CM.make("sources.cm");
-Parse.parse "../testcases/test_double_subscript.tig";
+Parse.parse "../testcases/test3.tig";
