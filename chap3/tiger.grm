@@ -119,6 +119,7 @@ id_subscript: ID LBRACK exp RBRACK ()
 array_creation: id_subscript OF exp ()
 
 lvalue_complex: lvalue DOT ID () 
+              | id_subscript LBRACK exp RBRACK ()
               | lvalue_complex LBRACK exp RBRACK ()
 
 lvalue: ID ()
