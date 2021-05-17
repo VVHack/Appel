@@ -1,5 +1,3 @@
-/* synonyms are fine */
-
 let 
 		type a = array of int
 		type b = a
