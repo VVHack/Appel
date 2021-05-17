@@ -1,7 +1,5 @@
-/* error : procedure returns value  and procedure is used in arexpr */
 let
 
-/* calculate n! */
 function nfactor(n: int) =
 		if  n = 0 
 			then 1
@@ -10,4 +8,3 @@ function nfactor(n: int) =
 in
 	nfactor(10)
 end
-
