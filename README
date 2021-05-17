@@ -1,0 +1,3 @@
+sml driver.sml
+Make sure to fix the sources.cm everytime (the last three should start with $/)
+

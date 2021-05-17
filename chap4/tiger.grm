@@ -7,13 +7,29 @@ structure A = Absyn
   | INT of int | STRING of string 
   | COMMA | COLON | SEMICOLON | LPAREN | RPAREN | LBRACK | RBRACK 
   | LBRACE | RBRACE | DOT 
-  | PLUS | MINUS | TIMES | DIVIDE | EQ | NEQ | LT | LE | GT | GE
+  | UMINUS | PLUS | MINUS | TIMES | DIVIDE | EQ | NEQ | LT | LE | GT | GE
   | AND | OR | ASSIGN
   | ARRAY | IF | THEN | ELSE | WHILE | FOR | TO | DO | LET | IN | END | OF 
   | BREAK | NIL
   | FUNCTION | VAR | TYPE 
 
-%nonterm  exp | program of A.exp
+%nonterm  exp | program | rvalue
+          | letexp | nonempty_expseq | expseq
+          | decs | dec | vardec | tydec | ty | nonempty_tyfields | tyfields | fundec
+          | arithmetic
+          | function_call | parameters | nonempty_parameters
+          | record_creation | tyinit | nonempty_tyinit
+          | id_subscript
+          | array_creation
+          | lvalue | lvalue_complex
+          | assignment
+          | if_then_else
+          | while_loop
+          | for_loop
+          | break_exp
+          | comparison
+          | boolean_operation
+
 
 %pos int
 %verbose
@@ -32,9 +48,116 @@ structure A = Absyn
 %value INT (1)
 %value STRING ("")
 
+%nonassoc OF ASSIGN
+%nonassoc WHILE FOR TO DO
+%nonassoc IF THEN
+%nonassoc ELSE
+%left AND OR
+%nonassoc EQ NEQ LT GT LE GE
+%left PLUS MINUS
+%left TIMES DIVIDE
+%left UMINUS
+%nonassoc LPAREN
+%nonassoc LBRACK
+
 %%
 
 program	: exp				(exp)
 
 	
-exp: NIL		(A.NilExp)
+(* exp: NIL		(A.NilExp) *)
+	
+exp: letexp 			() 
+   | function_call ()
+   | arithmetic ()
+   | MINUS exp %prec UMINUS ()
+   | LPAREN expseq RPAREN ()
+   | record_creation  ()
+   | lvalue       ()
+   | rvalue       ()
+   | array_creation       ()
+   | NIL          ()
+   | assignment ()
+   | if_then_else ()
+   | while_loop ()
+   | for_loop ()
+   | break_exp ()
+   | comparison ()
+   | boolean_operation ()
+
+letexp: LET decs IN expseq END ()
+
+expseq: () | nonempty_expseq ()
+nonempty_expseq: exp ()
+               | nonempty_expseq SEMICOLON exp ()
+
+decs: ()
+    | dec decs ()
+
+dec: vardec () | tydec () | fundec ()
+
+vardec: VAR ID COLON ID ASSIGN exp ()
+      | VAR ID ASSIGN exp ()
+
+tydec: TYPE ID EQ ty ()
+
+ty: ID () | LBRACE tyfields RBRACE () | ARRAY OF ID ()
+
+tyfields: () | nonempty_tyfields ()
+nonempty_tyfields: ID COLON ID ()
+                 | ID COLON ID COMMA nonempty_tyfields ()
+
+fundec: FUNCTION ID LPAREN tyfields RPAREN EQ exp ()
+      | FUNCTION ID LPAREN tyfields RPAREN COLON ID EQ exp ()
+
+arithmetic: exp PLUS exp ()
+          | exp MINUS exp ()
+          | exp TIMES exp ()
+          | exp DIVIDE exp ()
+
+function_call: ID LPAREN parameters RPAREN ()
+
+parameters: () | nonempty_parameters ()
+nonempty_parameters: exp ()
+                   | nonempty_parameters COMMA exp ()
+
+tyinit: () | nonempty_tyinit ()
+nonempty_tyinit: ID EQ exp ()
+               | nonempty_tyinit COMMA ID EQ exp ()
+record_creation: ID LBRACE tyinit RBRACE ()
+               | ID NIL ()
+
+id_subscript: ID LBRACK exp RBRACK ()
+
+array_creation: id_subscript OF exp ()
+
+lvalue_complex: lvalue DOT ID () 
+              | id_subscript LBRACK exp RBRACK ()
+              | lvalue_complex LBRACK exp RBRACK ()
+
+lvalue: ID ()
+      | lvalue_complex ()
+      | id_subscript ()
+
+assignment: lvalue ASSIGN exp ()
+
+rvalue: INT () | STRING ()
+
+if_then_else: IF exp THEN exp ()
+            | IF exp THEN exp ELSE exp ()
+
+while_loop: WHILE exp DO exp ()
+
+for_loop: FOR ID ASSIGN exp TO exp DO exp ()
+
+break_exp: BREAK ()
+
+comparison: exp EQ exp ()
+          | exp NEQ exp ()
+          | exp LT exp ()
+          | exp GT exp ()
+          | exp LE exp ()
+          | exp GE exp ()
+
+boolean_operation: exp AND exp ()
+                 | exp OR exp ()
