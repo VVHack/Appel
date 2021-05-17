@@ -1,5 +1,6 @@
 CM.make("sources.cm");
-Parse.parse "../testcases/test41.tig";
-Parse.parse "../testcases/test42.tig";
-Parse.parse "../testcases/test43.tig";
-Parse.parse "../testcases/test44.tig";
+Parse.parse "../testcases/test45.tig";
+Parse.parse "../testcases/test46.tig";
+Parse.parse "../testcases/test47.tig";
+Parse.parse "../testcases/test48.tig";
+Parse.parse "../testcases/test49.tig";

@@ -120,6 +120,7 @@ tyinit: () | nonempty_tyinit ()
 nonempty_tyinit: ID EQ exp ()
                | nonempty_tyinit COMMA ID EQ exp ()
 record_creation: ID LBRACE tyinit RBRACE ()
+               | ID NIL ()
 
 id_subscript: ID LBRACK exp RBRACK ()
 
