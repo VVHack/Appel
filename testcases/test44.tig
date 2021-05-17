@@ -1,4 +1,3 @@
-/* valid nil initialization and assignment */
 let 
 
 	type rectype = {name:string, id:int}
