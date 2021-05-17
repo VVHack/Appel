@@ -1,4 +1,3 @@
-/* error : unknown type */
 let
 	var a:= rectype {}
 in
