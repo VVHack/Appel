@@ -9,6 +9,7 @@ struct
 structure Header = 
 struct
 structure A = Absyn
+structure P = PrintAbsyn
 
 
 end

@@ -1,4 +1,5 @@
 structure A = Absyn
+structure P = PrintAbsyn
 
 %%
 %term
