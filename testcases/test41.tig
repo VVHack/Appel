@@ -1,4 +1,3 @@
-/* local types hide global */
 let
 	type a = int
 in
