@@ -68,9 +68,9 @@ program	: exp				(exp)
 	
 (* exp: NIL		(A.NilExp) *)
 	
-exp: letexp 			() 
+exp: letexp 	 (letexp) 
    | function_call ()
-   | arithmetic ()
+   | arithmetic (arithmetic)
    | MINUS exp %prec UMINUS ()
    | LPAREN expseq RPAREN ()
    | record_creation  ()

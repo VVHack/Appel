@@ -757,8 +757,8 @@ end; ()))
 end
 |  ( 1, ( ( _, ( MlyValue.ntVOID letexp1, letexp1left, letexp1right))
  :: rest671)) => let val  result = MlyValue.ntVOID (fn _ => ( let val 
- letexp1 = letexp1 ()
- in ()
+ (letexp as letexp1) = letexp1 ()
+ in (letexp)
 end; ()))
  in ( LrTable.NT 0, ( result, letexp1left, letexp1right), rest671)
 end
@@ -772,8 +772,8 @@ end; ()))
 end
 |  ( 3, ( ( _, ( MlyValue.ntVOID arithmetic1, arithmetic1left, 
 arithmetic1right)) :: rest671)) => let val  result = MlyValue.ntVOID
- (fn _ => ( let val  arithmetic1 = arithmetic1 ()
- in ()
+ (fn _ => ( let val  (arithmetic as arithmetic1) = arithmetic1 ()
+ in (arithmetic)
 end; ()))
  in ( LrTable.NT 0, ( result, arithmetic1left, arithmetic1right), 
 rest671)
